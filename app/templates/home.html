@@ -1,7 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head><title>Home</title></head>
+      <link rel="stylesheet" href="{{ url_for('static', filename='home.css')}}">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 <body>
-  <h1>🏒 Welcome to Hockey GM!</h1>
+<div class="container">
+  <h1>Welcome to Hockey General Manager</h1>
+  <button>Start New Game</button>
+  <button>Load An Older Game</button>
+</div>
 </body>
 </html>
