@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>newGame</title>
+      <link rel="stylesheet" href="{{ url_for('static', filename='newGame.css')}}">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>]
+  <h1> Pick a team:</h1>
+<div class="container">
+    <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Anaheim Ducks">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-anaheim-ducks-logo-480x480.png') }}" alt="Anaheim" >
+            <p class="team-name"> Anaheim Ducks</p>
+         </div>
+    </form>
+
+    <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Boston Bruins">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-boston-bruins-logo-480x480.png') }}" alt="Boston" >
+            <p class="team-name"> Boston Bruins</p>
+         </div>
+    </form>
+
+     <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Buffalo Sabres">
+          <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-buffalo-sabres-logo-480x480.png') }}" alt="Buffalo" >
+            <p class="team-name"> Buffalo Sabres</p>
+          </div>
+    </form>
+
+     <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Calgary Flames">
+          <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-calgary-flames-logo-480x480.png') }}" alt="Calgary" >
+            <p class="team-name"> Calgary Flames</p>
+          </div>
+    </form>
+
+     <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Carolina Hurricanes">
+          <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-carolina-hurricanes-logo-480x480.png') }}" alt="Carolina" >
+            <p class="team-name"> Carolina Hurricanes</p>
+          </div>
+    </form>
+
+     <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Chicago Blackhawks">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-chicago-blackhawks-logo-480x480.png') }}" alt="Chicago" >
+            <p class="team-name"> Chicago Blackhawks</p>
+         </div>
+    </form>
+
+
+     <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Colorado Avalanche">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-colorado-avalanche-logo-480x480.png') }}" alt="Colorado" >
+            <p class="team-name"> Colorado Avalanche</p>
+         </div>
+    </form>
+
+     <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Columbus Blue Jackets ">
+         <div class="team-card">
+             <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-columbus-blue-jackets-logo-480x480.png') }}" alt="Columbus" >
+            <p class="team-name"> Columbus Blue Jackets</p>
+         </div>
+    </form>
+
+    <div class="row-break"></div>
+
+      <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Dallas Stars">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-dallas-stars-logo-480x480.png') }}" alt="Dallas" >
+            <p class="team-name"> Dallas Stars</p>
+         </div>
+    </form>
+
+      <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Detroit Red Wings">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-detroit-red-wings-logo-480x480.png') }}" alt="Detroit" >
+            <p class="team-name"> Detroit Red Wings</p>
+         </div>
+    </form>
+
+     <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Edmonton Oilers">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-edmonton-oilers-logo-480x480.png') }}" alt="Edmonton" >
+            <p class="team-name"> Edmonton Oilers</p>
+         </div>
+    </form>
+
+     <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Florida Panthers">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-Florida-Panthers-logo-480x480.png') }}" alt="Florida" >
+            <p class="team-name"> Florida Panthers</p>
+         </div>
+    </form>
+
+     <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Los Angeles Kings">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-los-angeles-kings-logo-480x480.png') }}" alt="Los Angeles" >
+            <p class="team-name"> Los Angeles Kings</p>
+         </div>
+    </form>
+
+     <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Minnesota Wild">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-minnesota-wild-logo-480x480.png') }}" alt="Minnesota" >
+            <p class="team-name"> Minnesota Wild</p>
+         </div>
+    </form>
+
+     <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Montreal Canadiens">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-montreal-canadiens-logo-480x480.png') }}" alt="Montreal" >
+            <p class="team-name"> Montreal Canadiens</p>
+         </div>
+    </form>
+
+    <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Nashville Predators">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-nashville-predators-logo-300x300.png') }}" alt="Nashville" >
+            <p class="team-name"> Nashville Predators</p>
+         </div>
+    </form>
+
+    <div class="row-break"></div>
+
+       <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="New Jersey Devils">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-new-jersey-devils-logo-480x480.png') }}" alt="New Jersey" >
+            <p class="team-name"> New Jersey Devils</p>
+         </div>
+    </form>
+
+       <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="New York Islanders">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-new-york-islanders-logo-480x480.png') }}" alt="New York Isles" >
+            <p class="team-name"> New York Islanders</p>
+         </div>
+    </form>
+
+       <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="New York Rangers">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-new-york-rangers-logo-480x480.png') }}" alt="New York Rags" >
+            <p class="team-name"> New York Rangers</p>
+         </div>
+    </form>
+
+       <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Ottawa Senators">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-Ottawa-Senators-logo-480x480.png') }}" alt="Ottawa" >
+            <p class="team-name"> Ottawa Senators</p>
+         </div>
+    </form>
+
+       <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Philadelphia Flyers">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-philadelphia-flyers-logo-480x480.png') }}" alt="Philadelphia" >
+            <p class="team-name"> Philadelphia Flyers</p>
+         </div>
+    </form>
+
+       <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Pittsburgh Penguins">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-pittsburgh-penguins-logo-480x480.png') }}" alt="Pittsburgh" >
+            <p class="team-name"> Pittsburgh Penguins</p>
+         </div>
+    </form>
+
+       <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="San Jose Sharks">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-san-jose-sharks-logo-480x480.png') }}" alt="San Jose" >
+            <p class="team-name"> San Jose Sharks</p>
+         </div>
+    </form>
+
+          <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Seattle Kraken">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-seattle-kraken-logo-480x480.png') }}" alt="Seattle" >
+            <p class="team-name"> Seattle Kraken</p>
+         </div>
+    </form>
+
+    <div class="row-break"></div>
+
+
+       <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="St. Louis Blues">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-st-louis-blues-logo-480x480.png') }}" alt="St. Louis" >
+            <p class="team-name"> St. Louis Blues</p>
+         </div>
+    </form>
+
+
+    <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Tampa Bay Lightning">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-tampa-bay-lightning-logo-480x480.png') }}" alt="Tampa Bay" >
+            <p class="team-name"> Tampa Bay Lightning</p>
+         </div>
+    </form>
+
+
+       <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Toronto Maple Leafs">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-toronto-maple-leafs-logo-480x480.png') }}" alt="Toronto" >
+            <p class="team-name"> Toronto Maple Leafs</p>
+         </div>
+    </form>
+
+
+       <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Utah Hockey Club">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-utah-hockey-club-logo-480x480.png') }}" alt="Utah" >
+            <p class="team-name"> Utah Hockey Club</p>
+         </div>
+    </form>
+
+
+       <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Vancouver Canucks">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-vancouver-canucks-logo-480x480.png') }}" alt="Vancouver" >
+            <p class="team-name"> Vancouver Canucks</p>
+         </div>
+    </form>
+
+
+       <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Vegas Golden Knights">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-vegas-golden-knights-logo-480x480.png') }}" alt="Vegas" >
+            <p class="team-name"> Vegas Golden Knights</p>
+         </div>
+    </form>
+
+
+       <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Washington Capitals">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-washington-capitals-logo-480x480.png') }}" alt="Washington" >
+            <p class="team-name"> Washington Capitals</p>
+         </div>
+    </form>
+
+
+       <form action="{{url_for('startGame')}}" method="POST">
+    <input type="hidden" name="team" value="Winnipeg Jets">
+         <div class="team-card">
+            <input type="image" src="{{url_for('static',filename='Pictures/logos/nhl-winnipeg-jets-logo-480x480.png') }}" alt="Winnipeg" >
+            <p class="team-name"> Winnipeg Jets</p>
+         </div>
+    </form>
+
+</div>
+</body>
+</html>
