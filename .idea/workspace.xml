@@ -5,12 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="52994e4e-aadc-4edd-a63c-4dc634d16fb9" name="Changes" comment="Start of project">
-      <change afterPath="$PROJECT_DIR$/app/static/newGame.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/templates/newGame.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/game_logic/first_names.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/game_logic/last_names.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/game_logic/player_gen.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/game.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/game.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/HockeyGM.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/HockeyGM.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/home.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/home.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/newGame.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/newGame.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +25,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -40,33 +45,37 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/keetsm1/HockeyGM.git&quot;,
-    &quot;accountId&quot;: &quot;49b619bd-0dee-4335-822b-3cd4ac069098&quot;
+    &quot;accountId&quot;: &quot;7c4fcbf7-b1d2-4dd2-937a-071a20d87bc7&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
   <component name="ProjectId" id="2vvWzBXcKQpOQe7LzDodTJLr2qW" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;Python.run.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Python.run.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/gtapu/PycharmProjects/HockeyGM/app/game_logic",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\gtapu\PycharmProjects\HockeyGM\app\game_logic" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\gtapu\PycharmProjects\HockeyGM\app\game_logic" />
       <recent name="C:\Users\gtapu\PycharmProjects\HockeyGM\app\static" />
       <recent name="C:\Users\gtapu\PycharmProjects\HockeyGM\app\Pictures" />
     </key>
@@ -74,7 +83,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-4f4e415b4190-aa17d162503b-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-243.26053.29" />
+        <option value="bundled-python-sdk-348a24fa61fa-5312c7369657-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.23774.444" />
       </set>
     </attachedChunks>
   </component>

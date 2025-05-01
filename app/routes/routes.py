@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, request
 from app import app  # this imports the app object created in __init__.py
 
 @app.route('/')
@@ -11,5 +11,5 @@ def newGame():
 
 @app.route('/startGame', methods= ['POST'])
 def startGame():
-    team_name= request.form[team];
+    team_name= request.form['team']
     return render_template('game.html', team= team_name);
