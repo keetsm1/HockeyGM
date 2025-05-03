@@ -1,17 +1,23 @@
 <!DOCTYPE html>
-<html>
-<head><title>Home</title></head>
-      <link rel="stylesheet" href="{{ url_for('static', filename='home.css')}}">
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
 <body>
-<div class="container">
-  <h1>Welcome to Hockey General Manager</h1>
-    <form action="{{url_for('newGame') }}" method="get">
-         <button>Start New Game</button>
-    </form>
-  <button>Load An Older Game</button>
-</div>
+  <div class="container">
+    <h1>Welcome to Hockey General Manager</h1>
+    <div class="button-group">
+      <form action="{{url_for('newGame')}}" method="get">
+        <button class="btn">Start New Game</button>
+      </form>
+      <button class="btn">Load An Older Game</button>
+    </div>
+  </div>
 </body>
 </html>
