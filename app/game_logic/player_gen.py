@@ -1,6 +1,26 @@
 import csv
 import random
+import os
 from random import randint
+from app.game_logic.sqldb import save_to_database, conn, cursor
+
+# Path constants for name CSV files
+BASE_DIR = os.path.dirname(__file__)
+FIRST_NAMES_FILE = os.path.join(BASE_DIR, 'first_names.csv')
+LAST_NAMES_FILE = os.path.join(BASE_DIR, 'last_names.csv')
+
+def load_name_lists():
+    """
+    Load first and last names from CSV files and return two lists.
+    """
+    with open(FIRST_NAMES_FILE, mode='r') as f:
+        reader = csv.DictReader(f)
+        first_names = [row['first_name'] for row in reader]
+    with open(LAST_NAMES_FILE, mode='r') as f:
+        reader = csv.DictReader(f)
+        # Note: header in CSV is 'last_name'
+        last_names = [row.get('last_names', row.get('last_name')) for row in reader]
+    return first_names, last_names
 
 class player_generation:
     def __init__(self):
@@ -28,13 +48,7 @@ class player_generation:
         self.composure=0
 
     def generate_forwards(self):
-        with open('first_names.csv', mode= 'r') as file:
-            reader= csv.DictReader(file)
-            first_names= [row['first_name'] for row in reader]
-
-        with open('last_names.csv',mode = 'r') as file:
-            reader = csv.DictReader(file)
-            last_names = [row['last_names'] for row in reader]
+        first_names,last_names= load_name_lists()
 
 
         total_forwards= 750
@@ -46,7 +60,16 @@ class player_generation:
             first = random.choice(first_names)
             last = random.choice(last_names)
             player.name = f"{first} {last}"
-            player.potential= "Elite"
+
+
+            player_reaching_potential= randint(0,100)
+
+            if player_reaching_potential <= 25:
+                player.potential = "Low Elite"
+            elif player_reaching_potential>25 and player_reaching_potential<=75:
+                player.potential= "Medium Elite "
+            else:
+                player.potential= "Elite"
             player.age= randint(18,35)
             player.height= randint(172, 195) #in centimeters
             player.position= random.choice(["LW","C","RW"])
@@ -73,7 +96,15 @@ class player_generation:
                 first = random.choice(first_names)
                 last = random.choice(last_names)
                 player.name = f"{first} {last}"
-                player.potential = "Top 6"
+                player_reaching_potential = randint(0, 100)
+
+                if player_reaching_potential <= 25:
+                    player.potential = "Low Top 6"
+                elif player_reaching_potential > 25 and player_reaching_potential <= 75:
+                    player.potential = "Medium Top 6 "
+                else:
+                    player.potential = "Top 6"
+
                 player.age = randint(18, 35)
                 player.height = randint(172, 195)  # in centimeters
                 player.position = random.choice(["LW", "C", "RW"])
@@ -100,7 +131,14 @@ class player_generation:
                     first = random.choice(first_names)
                     last = random.choice(last_names)
                     player.name = f"{first} {last}"
-                    player.potential = "Bottom 6"
+                    player_reaching_potential = randint(0, 100)
+
+                    if player_reaching_potential <= 25:
+                        player.potential = "Low Bottom 6"
+                    elif player_reaching_potential > 25 and player_reaching_potential <= 75:
+                        player.potential = " Medium Bottom 6 "
+                    else:
+                        player.potential = "High Bottom 6"
                     player.age = randint(18, 35)
                     player.height = randint(172, 195)  # in centimeters
                     player.position = random.choice(["LW", "C", "RW"])
@@ -127,7 +165,14 @@ class player_generation:
                         first = random.choice(first_names)
                         last = random.choice(last_names)
                         player.name = f"{first} {last}"
-                        player.potential = "Fringe Player"
+                        player_reaching_potential = randint(0, 100)
+
+                        if player_reaching_potential <= 25:
+                            player.potential = "Low Fringe"
+                        elif player_reaching_potential > 25 and player_reaching_potential <= 75:
+                            player.potential = "Medium Fringe "
+                        else:
+                            player.potential = "Fringe"
                         player.age = randint(18, 35)
                         player.height = randint(172, 195)  # in centimeters
                         player.position = random.choice(["LW", "C", "RW"])
@@ -147,13 +192,7 @@ class player_generation:
                         player.speed = randint(40, 75)
 
     def generate_defenseman(self):
-        with open('first_names.csv', mode= 'r') as file:
-            reader= csv.DictReader(file)
-            first_names= [row['first_name'] for row in reader]
-
-        with open('last_names.csv',mode = 'r') as file:
-            reader = csv.DictReader(file)
-            last_names = [row['last_names'] for row in reader]
+        first_names, last_names= load_name_lists()
 
 
         total_defenseman= 330
@@ -165,7 +204,16 @@ class player_generation:
             first = random.choice(first_names)
             last = random.choice(last_names)
             player.name = f"{first} {last}"
-            player.potential= "Elite"
+            player_reaching_potential = randint(0, 100)
+
+            if player_reaching_potential <= 25:
+                player.potential = "Low Elite"
+            elif player_reaching_potential > 25 and player_reaching_potential <= 75:
+                player.potential = "Medium Elite "
+            else:
+                player.potential = "Elite"
+
+
             player.age= randint(18,35)
             player.height= randint(172, 195) #in centimeters
             player.position= random.choice(["LD","RD","LD/RD"])
@@ -192,7 +240,15 @@ class player_generation:
                 first = random.choice(first_names)
                 last = random.choice(last_names)
                 player.name = f"{first} {last}"
-                player.potential = "Top 4"
+                player_reaching_potential = randint(0, 100)
+
+                if player_reaching_potential <= 25:
+                    player.potential = "Low Top 4"
+                elif player_reaching_potential > 25 and player_reaching_potential <= 75:
+                    player.potential = "Medium Top 4 "
+                else:
+                    player.potential = "High Top 4"
+
                 player.age = randint(18, 35)
                 player.height = randint(172, 195)  # in centimeters
                 player.position = random.choice(["LD", "RD", "LD/RD"])
@@ -219,7 +275,16 @@ class player_generation:
                     first = random.choice(first_names)
                     last = random.choice(last_names)
                     player.name = f"{first} {last}"
-                    player.potential = "Bottom 4"
+                    player_reaching_potential = randint(0, 100)
+
+                    if player_reaching_potential <= 25:
+                        player.potential = "Low Bottom 4"
+                    elif player_reaching_potential > 25 and player_reaching_potential <= 75:
+                        player.potential = " Medium Bottom 4 "
+                    else:
+                        player.potential = "Bottom 4"
+
+
                     player.age = randint(18, 35)
                     player.height = randint(172, 195)  # in centimeters
                     player.position = random.choice(["LD", "RD", "LD/RD"])
@@ -246,7 +311,15 @@ class player_generation:
                         first = random.choice(first_names)
                         last = random.choice(last_names)
                         player.name = f"{first} {last}"
-                        player.potential = "Fringe Player"
+                        player_reaching_potential = randint(0, 100)
+
+                        if player_reaching_potential <= 25:
+                            player.potential = "Low Fringe"
+                        elif player_reaching_potential > 25 and player_reaching_potential <= 75:
+                            player.potential = "Medium Fringe "
+                        else:
+                            player.potential = "Fringe"
+
                         player.age = randint(18, 35)
                         player.height = randint(172, 195)  # in centimeters
                         player.position = random.choice(["LD", "RD", "LD/RD"])
@@ -269,13 +342,7 @@ class player_generation:
     def generate_goalies(self):
         total_goalies=80
 
-        with open('first_names.csv', mode= 'r') as file:
-            reader= csv.DictReader(file)
-            first_names= [row['first_name'] for row in reader]
-
-        with open('last_names.csv',mode = 'r') as file:
-            reader = csv.DictReader(file)
-            last_names = [row['last_names'] for row in reader]
+        first_names, last_names = load_name_lists()
 
         elite_goalies_probability = int(0.06 * total_goalies)
 
@@ -284,7 +351,14 @@ class player_generation:
             first = random.choice(first_names)
             last = random.choice(last_names)
             player.name = f"{first} {last}"
-            player.potential = "Elite"
+            player_reaching_potential = randint(0, 100)
+
+            if player_reaching_potential <= 25:
+                player.potential = "Low Elite"
+            elif player_reaching_potential > 25 and player_reaching_potential <= 75:
+                player.potential = "Medium Elite "
+            else:
+                player.potential = "Elite"
             player.age = randint(18, 35)
             player.height = randint(172, 195)  # in centimeters
             player.position = "G"
@@ -309,12 +383,19 @@ class player_generation:
             first = random.choice(first_names)
             last = random.choice(last_names)
             player.name = f"{first} {last}"
-            player.potential = "Starter"
+            player_reaching_potential = randint(0, 100)
+
+            if player_reaching_potential <= 25:
+                player.potential = "Low Starter"
+            elif player_reaching_potential > 25 and player_reaching_potential <= 75:
+                player.potential = "Medium Starter "
+            else:
+                player.potential = "Starter"
             player.age = randint(18, 35)
             player.height = randint(172, 195)  # in centimeters
             player.position = "G"
 
-            if (player.age == 18 or player.age == 19 or player.age == 20 or player.age == 21):
+            if (player.age <= 21):
                 player.weight = randint(145, 200)  # in lbs
             else:
                 player.weight = randint(170, 220)
@@ -372,11 +453,29 @@ class player_generation:
             player.puck_handling = randint(40, 60)
             player.composure = randint(50, 68)
 
+    def overall_rating_offense(self):
+        overall= (self.shooting+ self.passing+ self.vision+self.forward_defense+self.skating+self.speed)/6
 
+        return overall
 
+    def overall_rating_defense(self):
+        overall = (self.shooting + self.passing + self.vision + self.dman_defense + self.skating + self.speed) / 6
 
+        return overall
 
+    def overall_rating_goalies(self):
+        overall = (self.rebound_control+ self.technique+ self.glove+ self.blocker+ self.puck_handling+ self.composure) / 6
 
+        return overall
 
+    def create_players(self):
+        # Example usage
+        for _ in range(10):
+            player = player_generation()
+            player.generate_forwards()  # Ensure player attributes are set
+            save_to_database(player)
 
-
+        # Commit changes and close the connection
+        conn.commit()
+        cursor.close()
+        conn.close()

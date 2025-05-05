@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52994e4e-aadc-4edd-a63c-4dc634d16fb9" name="Changes" comment="Added player gen for forwards,goalies and dman in player_gen.py">
+    <list default="true" id="52994e4e-aadc-4edd-a63c-4dc634d16fb9" name="Changes" comment="Some UI changes and added Sidebar">
+      <change afterPath="$PROJECT_DIR$/app/game_logic/sqldb.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/game.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/game.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/home.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/home.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/game.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/game.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/game_logic/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/game_logic/player_gen.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/game_logic/player_gen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/routes.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +25,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -39,6 +44,9 @@
     &quot;accountId&quot;: &quot;7c4fcbf7-b1d2-4dd2-937a-071a20d87bc7&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -52,21 +60,40 @@
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "DefaultHtmlFileTemplate": "HTML File",
     "Python.player_gen.executor": "Run",
+    "Python.routes.executor": "Run",
     "Python.run.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "fixed__roster__generation",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/gtapu/PycharmProjects/HockeyGM/app/game_logic",
     "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
+  <component name="QodanaHighlightedReportService">
+    <option name="localRunNotPublishedPersistedInfo">
+      <LocalReportPersistedInfo>
+        <option name="path" value="C:\Users\gtapu\AppData\Local\Temp\qodana_output\qodana.sarif.json" />
+        <option name="reportGuid" value="87b2a224-7711-4052-85ff-a1324762c7f2" />
+        <option name="reportName" value="HockeyGM/qodana/2025-05-05" />
+      </LocalReportPersistedInfo>
+    </option>
+  </component>
+  <component name="QodanaIsSelectedPersistenceService">
+    <option name="selectedOrLoading" value="true" />
+  </component>
+  <component name="QodanaReportsService">
+    <option name="descriptions">
+      <ReportDescription localRun="true" path="C:\Users\gtapu\AppData\Local\Temp\qodana_output\qodana.sarif.json" reportGuid="87b2a224-7711-4052-85ff-a1324762c7f2" reportId="HockeyGM/qodana/2025-05-05" />
+    </option>
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\gtapu\PycharmProjects\HockeyGM\app\game_logic" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\gtapu\PycharmProjects\HockeyGM\app" />
       <recent name="C:\Users\gtapu\PycharmProjects\HockeyGM\app\game_logic" />
       <recent name="C:\Users\gtapu\PycharmProjects\HockeyGM\app\static" />
       <recent name="C:\Users\gtapu\PycharmProjects\HockeyGM\app\Pictures" />
@@ -136,13 +163,22 @@
       <option name="project" value="LOCAL" />
       <updated>1746138857898</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Some UI changes and added Sidebar">
+      <option name="closed" value="true" />
+      <created>1746237658158</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1746237658158</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Start of project" />
     <MESSAGE value="changes" />
     <MESSAGE value="Added player gen for forwards,goalies and dman in player_gen.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added player gen for forwards,goalies and dman in player_gen.py" />
+    <MESSAGE value="Some UI changes and added Sidebar" />
+    <option name="LAST_COMMIT_MESSAGE" value="Some UI changes and added Sidebar" />
   </component>
 </project>
