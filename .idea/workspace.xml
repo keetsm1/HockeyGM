@@ -7,9 +7,7 @@
     <list default="true" id="52994e4e-aadc-4edd-a63c-4dc634d16fb9" name="Changes" comment="Some UI changes and added Sidebar">
       <change afterPath="$PROJECT_DIR$/app/game_logic/sqldb.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/game_logic/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/game_logic/player_gen.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/game_logic/player_gen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/routes.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +43,7 @@
   }
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -171,7 +169,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746237658158</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Some UI changes and added Sidebar">
+      <option name="closed" value="true" />
+      <created>1746464305428</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1746464305428</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

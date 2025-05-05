@@ -48,159 +48,166 @@ class player_generation:
         self.composure=0
 
     def generate_forwards(self):
-        first_names,last_names= load_name_lists()
+        first_names, last_names = load_name_lists()
 
+        total_forwards = 1500
 
-        total_forwards= 750
+        elite_forward_probability = int(0.05 * total_forwards)
+        top6_forward_probability = int(0.15 * total_forwards)
+        bottom6_forward_probability = int(0.30 * total_forwards)
+        fringe_player_probability = int(0.25 * total_forwards)
 
-        elite_forward_probability= int(0.05 *total_forwards)
+        generated_players = []
 
+        # ----- Elite Forwards -----
         for _ in range(elite_forward_probability):
-            player= player_generation()
+            player = player_generation()
             first = random.choice(first_names)
             last = random.choice(last_names)
             player.name = f"{first} {last}"
 
-
-            player_reaching_potential= randint(0,100)
-
-            if player_reaching_potential <= 25:
+            r = random.randint(0, 100)
+            if r <= 25:
                 player.potential = "Low Elite"
-            elif player_reaching_potential>25 and player_reaching_potential<=75:
-                player.potential= "Medium Elite "
+            elif r <= 75:
+                player.potential = "Medium Elite"
             else:
-                player.potential= "Elite"
-            player.age= randint(18,35)
-            player.height= randint(172, 195) #in centimeters
-            player.position= random.choice(["LW","C","RW"])
+                player.potential = "Elite"
 
-            if (player.age == 18 or player.age == 19 or player.age== 20 or player.age==21):
-                player.weight= randint(140,180) #in lbs
-            else:
-                player.weight= randint(160, 220)
+            player.age = random.randint(18, 35)
+            player.height = random.randint(172, 195)
+            player.position = random.choice(["LW", "C", "RW"])
+            player.weight = (random.randint(140, 180)
+                             if player.age <= 21
+                             else random.randint(160, 220))
 
-            player.shooting= randint(80,93)
-            player.determination = randint(75,90)
-            player.passing= randint(80,94)
-            player.vision= randint(80,95)
+            player.shooting = random.randint(80, 93)
+            player.determination = random.randint(75, 90)
+            player.passing = random.randint(80, 94)
+            player.vision = random.randint(80, 95)
             player.dman_defense = 0
-            player.forward_defense = randint(60,90)
-            player.skating = randint(70,95)
-            player.speed= randint(70,95)
+            player.forward_defense = random.randint(60, 90)
+            player.skating = random.randint(70, 95)
+            player.speed = random.randint(70, 95)
 
-            #--------------------------------------------------------------------------------------------------------
-            top6_forward_probability = int(0.15 * total_forwards)
+            generated_players.append(player)
 
-            for _ in range(top6_forward_probability):
-                player = player_generation()
-                first = random.choice(first_names)
-                last = random.choice(last_names)
-                player.name = f"{first} {last}"
-                player_reaching_potential = randint(0, 100)
+        # ----- Top‑6 Forwards -----
+        for _ in range(top6_forward_probability):
+            player = player_generation()
+            first = random.choice(first_names)
+            last = random.choice(last_names)
+            player.name = f"{first} {last}"
 
-                if player_reaching_potential <= 25:
-                    player.potential = "Low Top 6"
-                elif player_reaching_potential > 25 and player_reaching_potential <= 75:
-                    player.potential = "Medium Top 6 "
-                else:
-                    player.potential = "Top 6"
+            r = random.randint(0, 100)
+            if r <= 25:
+                player.potential = "Low Top 6"
+            elif r <= 75:
+                player.potential = "Medium Top 6"
+            else:
+                player.potential = "Top 6"
 
-                player.age = randint(18, 35)
-                player.height = randint(172, 195)  # in centimeters
-                player.position = random.choice(["LW", "C", "RW"])
+            player.age = random.randint(18, 35)
+            player.height = random.randint(172, 195)
+            player.position = random.choice(["LW", "C", "RW"])
+            player.weight = (random.randint(140, 180)
+                             if player.age <= 21
+                             else random.randint(160, 220))
 
-                if (player.age == 18 or player.age == 19 or player.age == 20 or player.age == 21):
-                    player.weight = randint(140, 180)  # in lbs
-                else:
-                    player.weight = randint(160, 220)
+            player.shooting = random.randint(70, 90)
+            player.determination = random.randint(65, 85)
+            player.passing = random.randint(70, 90)
+            player.vision = random.randint(65, 88)
+            player.dman_defense = 0
+            player.forward_defense = random.randint(60, 90)
+            player.skating = random.randint(60, 90)
+            player.speed = random.randint(70, 95)
 
-                player.shooting = randint(70, 90)
-                player.determination = randint(65, 85)
-                player.passing = randint(70, 90)
-                player.vision = randint(65, 88)
-                player.dman_defense = 0
-                player.forward_defense = randint(60, 90)
-                player.skating = randint(60, 90)
-                player.speed = randint(70, 95)
+            generated_players.append(player)
 
-                # --------------------------------------------------------------------------------------------------------
-                bottom6_forward_probability = int(0.30 * total_forwards)
+        # ----- Bottom‑6 Forwards -----
+        for _ in range(bottom6_forward_probability):
+            player = player_generation()
+            first = random.choice(first_names)
+            last = random.choice(last_names)
+            player.name = f"{first} {last}"
 
-                for _ in range(bottom6_forward_probability):
-                    player = player_generation()
-                    first = random.choice(first_names)
-                    last = random.choice(last_names)
-                    player.name = f"{first} {last}"
-                    player_reaching_potential = randint(0, 100)
+            r = random.randint(0, 100)
+            if r <= 25:
+                player.potential = "Low Bottom 6"
+            elif r <= 75:
+                player.potential = "Medium Bottom 6"
+            else:
+                player.potential = "High Bottom 6"
 
-                    if player_reaching_potential <= 25:
-                        player.potential = "Low Bottom 6"
-                    elif player_reaching_potential > 25 and player_reaching_potential <= 75:
-                        player.potential = " Medium Bottom 6 "
-                    else:
-                        player.potential = "High Bottom 6"
-                    player.age = randint(18, 35)
-                    player.height = randint(172, 195)  # in centimeters
-                    player.position = random.choice(["LW", "C", "RW"])
+            player.age = random.randint(18, 35)
+            player.height = random.randint(172, 195)
+            player.position = random.choice(["LW", "C", "RW"])
+            player.weight = (random.randint(140, 180)
+                             if player.age <= 21
+                             else random.randint(160, 220))
 
-                    if (player.age == 18 or player.age == 19 or player.age == 20 or player.age == 21):
-                        player.weight = randint(140, 180)  # in lbs
-                    else:
-                        player.weight = randint(160, 220)
+            player.shooting = random.randint(60, 82)
+            player.determination = random.randint(50, 70)
+            player.passing = random.randint(60, 83)
+            player.vision = random.randint(60, 88)
+            player.dman_defense = 0
+            player.forward_defense = random.randint(60, 85)
+            player.skating = random.randint(60, 90)
+            player.speed = random.randint(50, 95)
 
-                    player.shooting = randint(60, 82)
-                    player.determination = randint(50, 70)
-                    player.passing = randint(60, 83)
-                    player.vision = randint(60, 88)
-                    player.dman_defense = 0
-                    player.forward_defense = randint(60, 85)
-                    player.skating = randint(60, 90)
-                    player.speed = randint(50, 95)
+            generated_players.append(player)
 
-                    # --------------------------------------------------------------------------------------------------------
-                    fringe_player_probability = int(0.25 * total_forwards)
+        # ----- Fringe Forwards -----
+        for _ in range(fringe_player_probability):
+            player = player_generation()
+            first = random.choice(first_names)
+            last = random.choice(last_names)
+            player.name = f"{first} {last}"
 
-                    for _ in range(fringe_player_probability):
-                        player = player_generation()
-                        first = random.choice(first_names)
-                        last = random.choice(last_names)
-                        player.name = f"{first} {last}"
-                        player_reaching_potential = randint(0, 100)
+            r = random.randint(0, 100)
+            if r <= 25:
+                player.potential = "Low Fringe"
+            elif r <= 75:
+                player.potential = "Medium Fringe"
+            else:
+                player.potential = "Fringe"
 
-                        if player_reaching_potential <= 25:
-                            player.potential = "Low Fringe"
-                        elif player_reaching_potential > 25 and player_reaching_potential <= 75:
-                            player.potential = "Medium Fringe "
-                        else:
-                            player.potential = "Fringe"
-                        player.age = randint(18, 35)
-                        player.height = randint(172, 195)  # in centimeters
-                        player.position = random.choice(["LW", "C", "RW"])
+            player.age = random.randint(18, 35)
+            player.height = random.randint(172, 195)
+            player.position = random.choice(["LW", "C", "RW"])
+            player.weight = (random.randint(140, 180)
+                             if player.age <= 21
+                             else random.randint(160, 220))
 
-                        if (player.age == 18 or player.age == 19 or player.age == 20 or player.age == 21):
-                            player.weight = randint(140, 180)  # in lbs
-                        else:
-                            player.weight = randint(160, 220)
+            player.shooting = random.randint(30, 60)
+            player.determination = random.randint(40, 65)
+            player.passing = random.randint(35, 65)
+            player.vision = random.randint(40, 68)
+            player.dman_defense = 0
+            player.forward_defense = random.randint(45, 70)
+            player.skating = random.randint(40, 75)
+            player.speed = random.randint(40, 75)
 
-                        player.shooting = randint(30, 60)
-                        player.determination = randint(40, 65)
-                        player.passing = randint(35, 65)
-                        player.vision = randint(40, 68)
-                        player.dman_defense = 0
-                        player.forward_defense = randint(45, 70)
-                        player.skating = randint(40, 75)
-                        player.speed = randint(40, 75)
+            generated_players.append(player)
+
+        return generated_players
 
     def generate_defenseman(self):
-        first_names, last_names= load_name_lists()
+        first_names, last_names = load_name_lists()
 
+        generated_players = []
 
-        total_defenseman= 330
+        total_defenseman = 700
 
-        elite_defenseman_probability= int(0.05 *total_defenseman)
+        elite_defenseman_probability = int(0.05 * total_defenseman)
+        top4_dman_probability = int(0.15 * total_defenseman)
+        bottom4_dman_probability = int(0.30 * total_defenseman)
+        fringe_dman_probability = int(0.25 * total_defenseman)
 
+        # Elite
         for _ in range(elite_defenseman_probability):
-            player= player_generation()
+            player = player_generation()
             first = random.choice(first_names)
             last = random.choice(last_names)
             player.name = f"{first} {last}"
@@ -213,139 +220,141 @@ class player_generation:
             else:
                 player.potential = "Elite"
 
+            player.age = randint(18, 35)
+            player.height = randint(172, 195)  # in centimeters
+            player.position = random.choice(["LD", "RD", "LD/RD"])
 
-            player.age= randint(18,35)
-            player.height= randint(172, 195) #in centimeters
-            player.position= random.choice(["LD","RD","LD/RD"])
-
-            if (player.age == 18 or player.age == 19 or player.age== 20 or player.age==21):
-                player.weight= randint(145,200) #in lbs
+            if player.age in (18, 19, 20, 21):
+                player.weight = randint(145, 200)  # in lbs
             else:
-                player.weight= randint(170, 240)
+                player.weight = randint(170, 240)
 
-            player.shooting= randint(75,90)
-            player.determination = randint(80,95)
-            player.passing= randint(73,94)
-            player.vision= randint(80,95)
-            player.dman_defense = randint(85,98)
+            player.shooting = randint(75, 90)
+            player.determination = randint(80, 95)
+            player.passing = randint(73, 94)
+            player.vision = randint(80, 95)
+            player.dman_defense = randint(85, 98)
             player.forward_defense = 0
-            player.skating = randint(80,95)
-            player.speed= randint(75,95)
+            player.skating = randint(80, 95)
+            player.speed = randint(75, 95)
 
-            #--------------------------------------------------------------------------------------------------------
-            top4_dman_probability = int(0.15 * total_defenseman)
+            generated_players.append(player)
 
-            for _ in range(top4_dman_probability):
-                player = player_generation()
-                first = random.choice(first_names)
-                last = random.choice(last_names)
-                player.name = f"{first} {last}"
-                player_reaching_potential = randint(0, 100)
+        # Top‑4
+        for _ in range(top4_dman_probability):
+            player = player_generation()
+            first = random.choice(first_names)
+            last = random.choice(last_names)
+            player.name = f"{first} {last}"
+            player_reaching_potential = randint(0, 100)
 
-                if player_reaching_potential <= 25:
-                    player.potential = "Low Top 4"
-                elif player_reaching_potential > 25 and player_reaching_potential <= 75:
-                    player.potential = "Medium Top 4 "
-                else:
-                    player.potential = "High Top 4"
+            if player_reaching_potential <= 25:
+                player.potential = "Low Top 4"
+            elif player_reaching_potential > 25 and player_reaching_potential <= 75:
+                player.potential = "Medium Top 4 "
+            else:
+                player.potential = "High Top 4"
 
-                player.age = randint(18, 35)
-                player.height = randint(172, 195)  # in centimeters
-                player.position = random.choice(["LD", "RD", "LD/RD"])
+            player.age = randint(18, 35)
+            player.height = randint(172, 195)  # in centimeters
+            player.position = random.choice(["LD", "RD", "LD/RD"])
 
-                if (player.age == 18 or player.age == 19 or player.age == 20 or player.age == 21):
-                    player.weight = randint(145, 185)  # in lbs
-                else:
-                    player.weight = randint(165, 230)
+            if player.age in (18, 19, 20, 21):
+                player.weight = randint(145, 185)  # in lbs
+            else:
+                player.weight = randint(165, 230)
 
-                player.shooting = randint(65, 83)
-                player.determination = randint(65, 85)
-                player.passing = randint(70, 85)
-                player.vision = randint(60, 85)
-                player.dman_defense = randint(75,90)
-                player.forward_defense = 0
-                player.skating = randint(60, 88)
-                player.speed = randint(70, 85)
+            player.shooting = randint(65, 83)
+            player.determination = randint(65, 85)
+            player.passing = randint(70, 85)
+            player.vision = randint(60, 85)
+            player.dman_defense = randint(75, 90)
+            player.forward_defense = 0
+            player.skating = randint(60, 88)
+            player.speed = randint(70, 85)
 
-                # --------------------------------------------------------------------------------------------------------
-                bottom4_dman_probability = int(0.30 * total_defenseman)
+            generated_players.append(player)
 
-                for _ in range(bottom4_dman_probability):
-                    player = player_generation()
-                    first = random.choice(first_names)
-                    last = random.choice(last_names)
-                    player.name = f"{first} {last}"
-                    player_reaching_potential = randint(0, 100)
+        # Bottom‑4
+        for _ in range(bottom4_dman_probability):
+            player = player_generation()
+            first = random.choice(first_names)
+            last = random.choice(last_names)
+            player.name = f"{first} {last}"
+            player_reaching_potential = randint(0, 100)
 
-                    if player_reaching_potential <= 25:
-                        player.potential = "Low Bottom 4"
-                    elif player_reaching_potential > 25 and player_reaching_potential <= 75:
-                        player.potential = " Medium Bottom 4 "
-                    else:
-                        player.potential = "Bottom 4"
+            if player_reaching_potential <= 25:
+                player.potential = "Low Bottom 4"
+            elif player_reaching_potential > 25 and player_reaching_potential <= 75:
+                player.potential = " Medium Bottom 4 "
+            else:
+                player.potential = "Bottom 4"
 
+            player.age = randint(18, 35)
+            player.height = randint(172, 195)  # in centimeters
+            player.position = random.choice(["LD", "RD", "LD/RD"])
 
-                    player.age = randint(18, 35)
-                    player.height = randint(172, 195)  # in centimeters
-                    player.position = random.choice(["LD", "RD", "LD/RD"])
+            if player.age in (18, 19, 20, 21):
+                player.weight = randint(140, 180)  # in lbs
+            else:
+                player.weight = randint(160, 220)
 
-                    if (player.age == 18 or player.age == 19 or player.age == 20 or player.age == 21):
-                        player.weight = randint(140, 180)  # in lbs
-                    else:
-                        player.weight = randint(160, 220)
+            player.shooting = randint(55, 75)
+            player.determination = randint(50, 70)
+            player.passing = randint(55, 78)
+            player.vision = randint(55, 80)
+            player.dman_defense = randint(65, 80)
+            player.forward_defense = 0
+            player.skating = randint(60, 85)
+            player.speed = randint(55, 85)
 
-                    player.shooting = randint(55, 75)
-                    player.determination = randint(50, 70)
-                    player.passing = randint(55, 78)
-                    player.vision = randint(55, 80)
-                    player.dman_defense = randint(65, 80)
-                    player.forward_defense = 0
-                    player.skating = randint(60, 85)
-                    player.speed = randint(55, 85)
+            generated_players.append(player)
 
-                    # --------------------------------------------------------------------------------------------------------
-                    fringe_dman_probability = int(0.25 * total_defenseman)
+        # Fringe
+        for _ in range(fringe_dman_probability):
+            player = player_generation()
+            first = random.choice(first_names)
+            last = random.choice(last_names)
+            player.name = f"{first} {last}"
+            player_reaching_potential = randint(0, 100)
 
-                    for _ in range(fringe_dman_probability):
-                        player = player_generation()
-                        first = random.choice(first_names)
-                        last = random.choice(last_names)
-                        player.name = f"{first} {last}"
-                        player_reaching_potential = randint(0, 100)
+            if player_reaching_potential <= 25:
+                player.potential = "Low Fringe"
+            elif player_reaching_potential > 25 and player_reaching_potential <= 75:
+                player.potential = "Medium Fringe "
+            else:
+                player.potential = "Fringe"
 
-                        if player_reaching_potential <= 25:
-                            player.potential = "Low Fringe"
-                        elif player_reaching_potential > 25 and player_reaching_potential <= 75:
-                            player.potential = "Medium Fringe "
-                        else:
-                            player.potential = "Fringe"
+            player.age = randint(18, 35)
+            player.height = randint(172, 195)  # in centimeters
+            player.position = random.choice(["LD", "RD", "LD/RD"])
 
-                        player.age = randint(18, 35)
-                        player.height = randint(172, 195)  # in centimeters
-                        player.position = random.choice(["LD", "RD", "LD/RD"])
+            if player.age in (18, 19, 20, 21):
+                player.weight = randint(140, 180)  # in lbs
+            else:
+                player.weight = randint(160, 220)
 
-                        if (player.age == 18 or player.age == 19 or player.age == 20 or player.age == 21):
-                            player.weight = randint(140, 180)  # in lbs
-                        else:
-                            player.weight = randint(160, 220)
+            player.shooting = randint(30, 58)
+            player.determination = randint(40, 62)
+            player.passing = randint(35, 60)
+            player.vision = randint(38, 65)
+            player.dman_defense = randint(55, 70)  # Not great defensively
+            player.forward_defense = 0
+            player.skating = randint(40, 72)
+            player.speed = randint(40, 72)
 
-                        player.shooting = randint(30, 58)
-                        player.determination = randint(40, 62)
-                        player.passing = randint(35, 60)
-                        player.vision = randint(38, 65)
-                        player.dman_defense = randint(55, 70)  # Not great defensively
-                        player.forward_defense = 0
-                        player.skating = randint(40, 72)
-                        player.speed = randint(40, 72)
+            generated_players.append(player)
 
+        return generated_players
 
     def generate_goalies(self):
-        total_goalies=80
+        total_goalies = 200
 
         first_names, last_names = load_name_lists()
 
-        elite_goalies_probability = int(0.06 * total_goalies)
+        generated_players = []
 
+        elite_goalies_probability = int(0.06 * total_goalies)
         for _ in range(elite_goalies_probability):
             player = player_generation()
             first = random.choice(first_names)
@@ -375,9 +384,10 @@ class player_generation:
             player.puck_handling = randint(70, 85)
             player.composure = randint(88, 98)
 
-        #--------------------------------------------------------------------------------------------------------
-        starter_goalies_probability = int(0.28 * total_goalies)
+            generated_players.append(player)
 
+        # --------------------------------------------------------------------------------------------------------
+        starter_goalies_probability = int(0.28 * total_goalies)
         for _ in range(starter_goalies_probability):
             player = player_generation()
             first = random.choice(first_names)
@@ -406,8 +416,11 @@ class player_generation:
             player.blocker = randint(75, 88)
             player.puck_handling = randint(60, 75)
             player.composure = randint(75, 90)
-        #-------------------------------------------------------------------------------------------------------------
-        backup_goalies_probability= int(0.35*total_goalies)
+
+            generated_players.append(player)
+
+        # -------------------------------------------------------------------------------------------------------------
+        backup_goalies_probability = int(0.35 * total_goalies)
         for _ in range(backup_goalies_probability):
             player = player_generation()
             first = random.choice(first_names)
@@ -429,8 +442,11 @@ class player_generation:
             player.blocker = randint(65, 80)
             player.puck_handling = randint(50, 70)
             player.composure = randint(65, 80)
-        #---------------------------------------------------------------------------------------------------------------
-        fringe_goalie_probability= int(0.30 *total_goalies)
+
+            generated_players.append(player)
+
+        # ---------------------------------------------------------------------------------------------------------------
+        fringe_goalie_probability = int(0.30 * total_goalies)
         for _ in range(fringe_goalie_probability):
             player = player_generation()
             first = random.choice(first_names)
@@ -452,6 +468,9 @@ class player_generation:
             player.blocker = randint(50, 70)
             player.puck_handling = randint(40, 60)
             player.composure = randint(50, 68)
+            generated_players.append(player)
+
+        return generated_players
 
     def overall_rating_offense(self):
         overall= (self.shooting+ self.passing+ self.vision+self.forward_defense+self.skating+self.speed)/6
@@ -469,13 +488,16 @@ class player_generation:
         return overall
 
     def create_players(self):
-        # Example usage
-        for _ in range(10):
-            player = player_generation()
-            player.generate_forwards()  # Ensure player attributes are set
-            save_to_database(player)
+        # Generate forwards, defensemen and goalies:
+        all_forwards = self.generate_forwards()
+        all_defensemen = self.generate_defenseman()
+        all_goalies = self.generate_goalies()
 
-        # Commit changes and close the connection
+        # Save *each* generated player to the database:
+        for p in all_forwards + all_defensemen + all_goalies:
+            save_to_database(p)
+
+        # Commit & clean up
         conn.commit()
         cursor.close()
         conn.close()
