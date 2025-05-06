@@ -1,12 +1,7 @@
 import psycopg2
 
-conn = psycopg2.connect(
-    dbname="hockey_gm",
-    user="flaskuser",
-    password="Ramanjit12!",
-    host="localhost"
-)
-cursor = conn.cursor()
+#connection here code here down below removed for privacy concerns
+
 
 def save_to_database(player):
     query = """
