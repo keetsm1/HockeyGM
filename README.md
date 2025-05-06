@@ -1,4 +1,4 @@
-Developed a browser-based Hockey General Manager simulation game where users take control of a hockey team, managing rosters, making trades, handling finances, and simulating seasons. Built with a Python backend (Flask) and an intuitive front-end using HTML, CSS, and JavaScript for dynamic user interaction.
+Developing a browser-based Hockey General Manager simulation game where users take control of a hockey team, managing rosters, making trades, handling finances, and simulating seasons. Built with a Python backend (Flask) and an intuitive front-end using HTML, CSS, and JavaScript for dynamic user interaction.
 
 Key Features:
 
