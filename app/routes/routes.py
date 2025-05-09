@@ -2,7 +2,7 @@ from flask import render_template, request,session
 from app import app  # this imports the app object created in __init__.py
 from app.game_logic import player_gen
 # from app.game_logic.sqldb import reset_database
-app.secret_key= "kobe"
+app.secret_key= "???" #removed for security purposes.
 
 
 @app.route('/')
