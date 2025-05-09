@@ -1,14 +1,6 @@
 import psycopg2
 
-conn= psycopg2.connect(
-        dbname="hockeygm",
-        user="postgres",
-        password="Ramanjit12!",
-        host="localhost",
-        port= "5432"
-    )
-
-cur= conn.cursor()
+#connection stuff is supposed to heree
 
 def save_to_database(player):
     query = """
