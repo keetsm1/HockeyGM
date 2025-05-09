@@ -1,12 +1,14 @@
 import psycopg2
 
-conn = psycopg2.connect(
-    dbname="hockey_gm",
-    user="flaskuser",
-    password="Ramanjit12!",
-    host="localhost"
-)
-cursor = conn.cursor()
+conn= psycopg2.connect(
+        dbname="hockeygm",
+        user="postgres",
+        password="Ramanjit12!",
+        host="localhost",
+        port= "5432"
+    )
+
+cur= conn.cursor()
 
 def save_to_database(player):
     query = """
@@ -25,4 +27,8 @@ def save_to_database(player):
         player.skating, player.speed, player.rebound_control, player.technique,
         player.glove, player.blocker, player.puck_handling, player.composure
     )
-    cursor.execute(query, values)
+    cur.execute(query, values)
+    conn.commit()
+
+# cur.close()
+# conn.close()

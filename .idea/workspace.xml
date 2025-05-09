@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52994e4e-aadc-4edd-a63c-4dc634d16fb9" name="Changes" comment="Some UI changes and added Sidebar">
-      <change afterPath="$PROJECT_DIR$/app/game_logic/sqldb.py" afterDir="false" />
+    <list default="true" id="52994e4e-aadc-4edd-a63c-4dc634d16fb9" name="Changes" comment="fixed roster loading into sql.">
+      <change afterPath="$PROJECT_DIR$/app/static/roster.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/roster.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/game_logic/player_gen.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/game_logic/player_gen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/game_logic/sqldb.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/game_logic/sqldb.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/game.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/game.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,8 +21,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -60,6 +64,7 @@
     "Python.player_gen.executor": "Run",
     "Python.routes.executor": "Run",
     "Python.run.executor": "Run",
+    "Python.sqldb.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
@@ -69,18 +74,6 @@
     "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
-  <component name="QodanaHighlightedReportService">
-    <option name="localRunNotPublishedPersistedInfo">
-      <LocalReportPersistedInfo>
-        <option name="path" value="C:\Users\gtapu\AppData\Local\Temp\qodana_output\qodana.sarif.json" />
-        <option name="reportGuid" value="87b2a224-7711-4052-85ff-a1324762c7f2" />
-        <option name="reportName" value="HockeyGM/qodana/2025-05-05" />
-      </LocalReportPersistedInfo>
-    </option>
-  </component>
-  <component name="QodanaIsSelectedPersistenceService">
-    <option name="selectedOrLoading" value="true" />
-  </component>
   <component name="QodanaReportsService">
     <option name="descriptions">
       <ReportDescription localRun="true" path="C:\Users\gtapu\AppData\Local\Temp\qodana_output\qodana.sarif.json" reportGuid="87b2a224-7711-4052-85ff-a1324762c7f2" reportId="HockeyGM/qodana/2025-05-05" />
@@ -177,7 +170,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746464305428</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="fixed roster loading into sql.">
+      <option name="closed" value="true" />
+      <created>1746477178537</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1746477178537</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -185,6 +186,7 @@
     <MESSAGE value="changes" />
     <MESSAGE value="Added player gen for forwards,goalies and dman in player_gen.py" />
     <MESSAGE value="Some UI changes and added Sidebar" />
-    <option name="LAST_COMMIT_MESSAGE" value="Some UI changes and added Sidebar" />
+    <MESSAGE value="fixed roster loading into sql." />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed roster loading into sql." />
   </component>
 </project>

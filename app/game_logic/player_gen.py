@@ -2,7 +2,7 @@ import csv
 import random
 import os
 from random import randint
-from app.game_logic.sqldb import save_to_database, conn, cursor
+from app.game_logic.sqldb import save_to_database
 
 # Path constants for name CSV files
 BASE_DIR = os.path.dirname(__file__)
@@ -50,7 +50,7 @@ class player_generation:
     def generate_forwards(self):
         first_names, last_names = load_name_lists()
 
-        total_forwards = 1500
+        total_forwards = 700
 
         elite_forward_probability = int(0.05 * total_forwards)
         top6_forward_probability = int(0.15 * total_forwards)
@@ -198,7 +198,7 @@ class player_generation:
 
         generated_players = []
 
-        total_defenseman = 700
+        total_defenseman = 500
 
         elite_defenseman_probability = int(0.05 * total_defenseman)
         top4_dman_probability = int(0.15 * total_defenseman)
@@ -348,7 +348,7 @@ class player_generation:
         return generated_players
 
     def generate_goalies(self):
-        total_goalies = 200
+        total_goalies = 120
 
         first_names, last_names = load_name_lists()
 
@@ -475,19 +475,33 @@ class player_generation:
     def overall_rating_offense(self):
         overall= (self.shooting+ self.passing+ self.vision+self.forward_defense+self.skating+self.speed)/6
 
-        return overall
+        return round(overall)
 
     def overall_rating_defense(self):
         overall = (self.shooting + self.passing + self.vision + self.dman_defense + self.skating + self.speed) / 6
 
-        return overall
+        return round(overall)
 
     def overall_rating_goalies(self):
         overall = (self.rebound_control+ self.technique+ self.glove+ self.blocker+ self.puck_handling+ self.composure) / 6
 
-        return overall
+        return round(overall)
+
+
+
 
     def create_players(self):
+
+        NHL_TEAMS = [
+            "Anaheim Ducks", "Arizona Coyotes", "Boston Bruins", "Buffalo Sabres",
+            "Calgary Flames", "Carolina Hurricanes", "Chicago Blackhawks", "Colorado Avalanche",
+            "Columbus Blue Jackets", "Dallas Stars", "Detroit Red Wings", "Edmonton Oilers",
+            "Florida Panthers", "Los Angeles Kings", "Minnesota Wild", "Montreal Canadiens",
+            "Nashville Predators", "New Jersey Devils", "New York Islanders", "New York Rangers",
+            "Ottawa Senators", "Philadelphia Flyers", "Pittsburgh Penguins", "San Jose Sharks",
+            "Seattle Kraken", "St. Louis Blues", "Tampa Bay Lightning", "Toronto Maple Leafs",
+            "Vancouver Canucks", "Vegas Golden Knights", "Washington Capitals", "Winnipeg Jets"
+        ]
         # Generate forwards, defensemen and goalies:
         all_forwards = self.generate_forwards()
         all_defensemen = self.generate_defenseman()
@@ -495,9 +509,19 @@ class player_generation:
 
         # Save *each* generated player to the database:
         for p in all_forwards + all_defensemen + all_goalies:
+            # 1) assign a random NHL team
+            p.team = random.choice(NHL_TEAMS)
+
+            # 2) compute overall rating based on position
+            if p.position == "G":
+                p.overall_rating = p.overall_rating_goalies()
+            elif p.position in ("LD", "RD", "LD/RD"):
+                p.overall_rating = p.overall_rating_defense()
+            else:
+                p.overall_rating = p.overall_rating_offense()
+
+            # 3) now save—including team & overall_rating columns
             save_to_database(p)
 
         # Commit & clean up
-        conn.commit()
-        cursor.close()
-        conn.close()
+
