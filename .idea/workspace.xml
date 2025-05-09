@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52994e4e-aadc-4edd-a63c-4dc634d16fb9" name="Changes" comment="fixed roster loading into sql.">
-      <change afterPath="$PROJECT_DIR$/app/static/roster.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/templates/roster.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/game_logic/player_gen.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/game_logic/player_gen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/game_logic/sqldb.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/game_logic/sqldb.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/game.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/game.html" afterDir="false" />
-    </list>
+    <list default="true" id="52994e4e-aadc-4edd-a63c-4dc634d16fb9" name="Changes" comment="fixed roster loading into sql." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -68,7 +60,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "fixed__roster__generation",
+    "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/gtapu/PycharmProjects/HockeyGM/app/game_logic",
     "settings.editor.selected.configurable": "preferences.pluginManager"
