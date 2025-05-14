@@ -17,6 +17,33 @@
     <a href="#">Free Agents</a>
     <a href="#">Staff</a>
     <a href="#">Draft</a>
-</div>
+  </div>
+
+
+  <div class="content">
+    <h1>Team Rosters</h1>
+
+    <form method="get" action="{{ url_for('rosters') }}">
+      <label for="team">Choose a team:</label>
+      <select name="team" id="team" onchange="this.form.submit()">
+        {% for team in teams %}
+          <option value="{{ team }}" {% if team == selected_team %}selected{% endif %}>{{ team }}</option>
+        {% endfor %}
+      </select>
+    </form>
+
+    <h2>{{ selected_team }}</h2>
+
+    {% for group, players in roster.items() %}
+      <div class="position-group">
+        <h3>{{ group }}</h3>
+        <ul>
+          {% for player in players %}
+            <li>{{ player }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endfor %}
+  </div>
 </body>
 </html>
