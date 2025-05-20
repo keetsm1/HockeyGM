@@ -50,12 +50,12 @@ class player_generation:
     def generate_forwards(self):
         first_names, last_names = load_name_lists()
 
-        total_forwards = 700
+        total_forwards = 750
 
-        elite_forward_probability = int(0.05 * total_forwards)
-        top6_forward_probability = int(0.15 * total_forwards)
-        bottom6_forward_probability = int(0.30 * total_forwards)
-        fringe_player_probability = int(0.25 * total_forwards)
+        elite_forward_probability = round(0.10 * total_forwards)
+        top6_forward_probability = round(0.2 * total_forwards)
+        bottom6_forward_probability = round(0.35 * total_forwards)
+        fringe_player_probability = round(0.45 * total_forwards)
 
         generated_players = []
 
@@ -66,7 +66,7 @@ class player_generation:
             last = random.choice(last_names)
             player.name = f"{first} {last}"
 
-            r = random.randint(0, 100)
+            r = random.randint(1, 100)
             if r <= 25:
                 player.potential = "Low Elite"
             elif r <= 75:
@@ -99,7 +99,7 @@ class player_generation:
             last = random.choice(last_names)
             player.name = f"{first} {last}"
 
-            r = random.randint(0, 100)
+            r = random.randint(1, 100)
             if r <= 25:
                 player.potential = "Low Top 6"
             elif r <= 75:
@@ -132,7 +132,7 @@ class player_generation:
             last = random.choice(last_names)
             player.name = f"{first} {last}"
 
-            r = random.randint(0, 100)
+            r = random.randint(1, 100)
             if r <= 25:
                 player.potential = "Low Bottom 6"
             elif r <= 75:
@@ -165,7 +165,7 @@ class player_generation:
             last = random.choice(last_names)
             player.name = f"{first} {last}"
 
-            r = random.randint(0, 100)
+            r = random.randint(1, 100)
             if r <= 25:
                 player.potential = "Low Fringe"
             elif r <= 75:
@@ -200,10 +200,10 @@ class player_generation:
 
         total_defenseman = 500
 
-        elite_defenseman_probability = int(0.05 * total_defenseman)
-        top4_dman_probability = int(0.15 * total_defenseman)
-        bottom4_dman_probability = int(0.30 * total_defenseman)
-        fringe_dman_probability = int(0.25 * total_defenseman)
+        elite_defenseman_probability = int(0.1 * total_defenseman)
+        top4_dman_probability = int(0.2 * total_defenseman)
+        bottom4_dman_probability = int(0.35 * total_defenseman)
+        fringe_dman_probability = int(0.45 * total_defenseman)
 
         # Elite
         for _ in range(elite_defenseman_probability):
@@ -216,7 +216,7 @@ class player_generation:
             if player_reaching_potential <= 25:
                 player.potential = "Low Elite"
             elif player_reaching_potential > 25 and player_reaching_potential <= 75:
-                player.potential = "Medium Elite "
+                player.potential = "Medium Elite"
             else:
                 player.potential = "Elite"
 
@@ -246,12 +246,12 @@ class player_generation:
             first = random.choice(first_names)
             last = random.choice(last_names)
             player.name = f"{first} {last}"
-            player_reaching_potential = randint(0, 100)
+            player_reaching_potential = randint(1, 100)
 
             if player_reaching_potential <= 25:
                 player.potential = "Low Top 4"
-            elif player_reaching_potential > 25 and player_reaching_potential <= 75:
-                player.potential = "Medium Top 4 "
+            elif player_reaching_potential <= 75:
+                player.potential = "Medium Top 4"
             else:
                 player.potential = "High Top 4"
 
@@ -286,7 +286,7 @@ class player_generation:
             if player_reaching_potential <= 25:
                 player.potential = "Low Bottom 4"
             elif player_reaching_potential > 25 and player_reaching_potential <= 75:
-                player.potential = " Medium Bottom 4 "
+                player.potential = " Medium Bottom 4"
             else:
                 player.potential = "Bottom 4"
 
@@ -365,7 +365,7 @@ class player_generation:
             if player_reaching_potential <= 25:
                 player.potential = "Low Elite"
             elif player_reaching_potential > 25 and player_reaching_potential <= 75:
-                player.potential = "Medium Elite "
+                player.potential = "Medium Elite"
             else:
                 player.potential = "Elite"
             player.age = randint(18, 35)
@@ -398,7 +398,7 @@ class player_generation:
             if player_reaching_potential <= 25:
                 player.potential = "Low Starter"
             elif player_reaching_potential > 25 and player_reaching_potential <= 75:
-                player.potential = "Medium Starter "
+                player.potential = "Medium Starter"
             else:
                 player.potential = "Starter"
             player.age = randint(18, 35)
@@ -487,11 +487,7 @@ class player_generation:
 
         return round(overall)
 
-
-
-
     def create_players(self):
-
         NHL_TEAMS = [
             "Anaheim Ducks", "Arizona Coyotes", "Boston Bruins", "Buffalo Sabres",
             "Calgary Flames", "Carolina Hurricanes", "Chicago Blackhawks", "Colorado Avalanche",
@@ -502,26 +498,62 @@ class player_generation:
             "Seattle Kraken", "St. Louis Blues", "Tampa Bay Lightning", "Toronto Maple Leafs",
             "Vancouver Canucks", "Vegas Golden Knights", "Washington Capitals", "Winnipeg Jets"
         ]
-        # Generate forwards, defensemen and goalies:
+
+        # Generate players
         all_forwards = self.generate_forwards()
         all_defensemen = self.generate_defenseman()
         all_goalies = self.generate_goalies()
 
-        # Save *each* generated player to the database:
-        for p in all_forwards + all_defensemen + all_goalies:
-            # 1) assign a random NHL team
-            p.team = random.choice(NHL_TEAMS)
+        # Sort each category
+        all_forwards.sort(key=lambda p: p.overall_rating_offense(), reverse=True)
+        all_defensemen.sort(key=lambda p: p.overall_rating_defense(), reverse=True)
+        all_goalies.sort(key=lambda p: p.overall_rating_goalies(), reverse=True)
 
-            # 2) compute overall rating based on position
-            if p.position == "G":
-                p.overall_rating = p.overall_rating_goalies()
-            elif p.position in ("LD", "RD", "LD/RD"):
-                p.overall_rating = p.overall_rating_defense()
+        def distribute_evenly(players, per_team, teams):
+            # Shuffle slices of players to create mix
+            chunks = [players[i::len(teams)] for i in range(len(teams))]
+            for chunk in chunks:
+                random.shuffle(chunk)
+
+            distributed = {team: [] for team in teams}
+            for i, team in enumerate(teams):
+                for j in range(per_team):
+                    try:
+                        distributed[team].append(chunks[j][i])
+                    except IndexError:
+                        pass  # not enough players to fill every slot
+            return distributed
+
+        forwards_by_team = distribute_evenly(all_forwards, 15, NHL_TEAMS)
+        defensemen_by_team = distribute_evenly(all_defensemen, 8, NHL_TEAMS)
+        goalies_by_team = distribute_evenly(all_goalies, 3, NHL_TEAMS)
+
+        for team in NHL_TEAMS:
+            players = forwards_by_team[team] + defensemen_by_team[team] + goalies_by_team[team]
+            for player in players:
+                player.team = team
+                if player.position == "G":
+                    player.overall_rating = player.overall_rating_goalies()
+                elif player.position in ("LD", "RD", "LD/RD"):
+                    player.overall_rating = player.overall_rating_defense()
+                else:
+                    player.overall_rating = player.overall_rating_offense()
+                save_to_database(player)
+
+        # Free agents: leftovers
+        used_players = sum(forwards_by_team.values(), []) + \
+                       sum(defensemen_by_team.values(), []) + \
+                       sum(goalies_by_team.values(), [])
+        all_used_ids = set(id(p) for p in used_players)
+
+        free_agents = [p for p in all_forwards + all_defensemen + all_goalies if id(p) not in all_used_ids]
+
+        for fa in free_agents:
+            fa.team = "FREE AGENT"
+            if fa.position == "G":
+                fa.overall_rating = fa.overall_rating_goalies()
+            elif fa.position in ("LD", "RD", "LD/RD"):
+                fa.overall_rating = fa.overall_rating_defense()
             else:
-                p.overall_rating = p.overall_rating_offense()
-
-            # 3) now save—including team & overall_rating columns
-            save_to_database(p)
-
-        # Commit & clean up
-
+                fa.overall_rating = fa.overall_rating_offense()
+            save_to_database(fa)

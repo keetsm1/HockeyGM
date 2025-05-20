@@ -2,48 +2,89 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Rosters</title>
-       <link rel="stylesheet" href="{{ url_for('static', filename='roster.css')}}">
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Roster</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='roster.css') }}">
 </head>
 <body>
-  <div class="sidebar">
-    <a href="{{ url_for('sidebar_home') }}">Home</a>
-    <a href="#">Lines</a>
-    <a href="#">Trade</a>
-    <a href="{{ url_for('rosters') }}">Rosters</a>
-    <a href="#">Free Agents</a>
-    <a href="#">Staff</a>
-    <a href="#">Draft</a>
-  </div>
+    <div class="sidebar">
+        <a href="/">Home</a>
+        <a href="/lines">Lines</a>
+        <a href="/trade">Trade</a>
+        <a href="/rosters">Rosters</a>
+        <a href="/free_agents">Free Agents</a>
+        <a href="/staff">Staff</a>
+        <a href="/draft">Draft</a>
+    </div>
+    <div class="content">
+        <h1>Team Roster</h1>
+        <form method="get" action="{{ url_for('rosters') }}">
+            <label for="team">Choose a team:</label>
+            <select name="team" id="team" onchange="this.form.submit()">
+                {% for team in teams %}
+                    <option value="{{ team }}" {% if team == selected_team %}selected{% endif %}>{{ team }}</option>
+                {% endfor %}
+            </select>
+        </form>
+       <h2>Forwards</h2>
+            <table>
+              <thead>
+                <tr>
+                  {% for col in forwards_columns %}
+                  <th>{{ col }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for player in forwards %}
+                <tr>
+                  {% for stat in player %}
+                  <td>{{ stat }}</td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
 
+            <h2>Defensemen</h2>
+            <table>
+              <thead>
+                <tr>
+                  {% for col in defensemen_columns %}
+                  <th>{{ col }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for player in defensemen %}
+                <tr>
+                  {% for stat in player %}
+                  <td>{{ stat }}</td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
 
-  <div class="content">
-    <h1>Team Rosters</h1>
-
-    <form method="get" action="{{ url_for('rosters') }}">
-      <label for="team">Choose a team:</label>
-      <select name="team" id="team" onchange="this.form.submit()">
-        {% for team in teams %}
-          <option value="{{ team }}" {% if team == selected_team %}selected{% endif %}>{{ team }}</option>
-        {% endfor %}
-      </select>
-    </form>
-
-    <h2>{{ selected_team }}</h2>
-
-    {% for group, players in roster.items() %}
-      <div class="position-group">
-        <h3>{{ group }}</h3>
-        <ul>
-          {% for player in players %}
-            <li>{{ player }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-    {% endfor %}
-  </div>
+            <h2>Goalies</h2>
+            <table>
+              <thead>
+                <tr>
+                  {% for col in goalies_columns %}
+                  <th>{{ col }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for player in goalies %}
+                <tr>
+                  {% for stat in player %}
+                  <td>{{ stat }}</td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+    </div>
 </body>
 </html>

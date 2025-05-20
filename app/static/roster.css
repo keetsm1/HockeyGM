@@ -1,11 +1,11 @@
+/* Keeping your existing styles */
 body {
   background-color: #000000;
-  margin: 0; /* Reset body margin */
-  padding: 0; /* Reset body padding */
+  margin: 0;
+  padding: 0;
   font-family: 'Montserrat', sans-serif;
-  color: #B0BEC5; /* Light gray for text */
+  color: #B0BEC5;
   height: 100vh;
-  overflow: hidden; /* Prevent scrolling on the body */
 }
 
 .sidebar {
@@ -18,37 +18,94 @@ body {
   background-color: #111;
   overflow-x: hidden;
   padding-top: 20px;
-  border-right: 2px solid #C0C0C0; /* Silver border for separation */
+  border-right: 2px solid #C0C0C0;
 }
 
 .sidebar a {
   padding: 10px 15px;
   text-decoration: none;
   font-size: 16px;
-  color: #B0BEC5; /* Light gray for links */
+  color: #B0BEC5;
   display: block;
   transition: 0.3s;
 }
 
 .sidebar a:hover {
-  background-color: #00AEEF; /* Ice Blue hover effect */
+  background-color: #00AEEF;
   color: #000000;
 }
 
-/* Content styling */
 .content {
-  margin-left: 162px; /* Match sidebar width (160px) + border (2px) */
+  margin-left: 160px;
   padding: 20px;
-  width: calc(100% - 162px); /* Full width minus sidebar */
-  height: 100vh;
-  box-sizing: border-box;
-  overflow: auto; /* Allow scrolling if content is too long */
 }
 
-/* Additional styling for headings */
-h1, h2, h3 {
-  color: #ffffff; /* White headings for better contrast */
-  font-size: 2rem; /* Bigger font size for headings */
-  text-align: left; /* Align headings to the left */
-  margin-top: 0; /* Remove default top margin for first heading */
+/* New Modern Table Styling */
+table {
+  width: fit-content;
+  max-width: 90%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 20px;
+  font-size: 12px;
+  background-color: #121212;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 174, 239, 0.15);
+}
+
+table th, table td {
+  border: none;
+  padding: 6px 10px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+table th {
+  background-color: #1E1E1E;
+  color: #00AEEF;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #00AEEF;
+}
+
+table tr {
+  transition: all 0.2s ease;
+}
+
+table tr:nth-child(odd) {
+  background-color: #1A1A1A;
+}
+
+table tr:nth-child(even) {
+  background-color: #121212;
+}
+
+table tr:hover {
+  background-color: #232323;
+  transform: translateY(-1px);
+}
+
+table td {
+  color: #B0BEC5;
+  border-bottom: 1px solid #333;
+}
+
+/* Optional: Add some accent colors for specific columns or data */
+table td.highlight {
+  color: #00AEEF;
+  font-weight: 500;
+}
+
+/* Optional: Style for the first column if it contains IDs or row numbers */
+table td:first-child {
+  font-weight: 500;
+  color: #90A4AE;
+}
+
+/* Add a subtle glow effect on table hover */
+table:hover {
+  box-shadow: 0 6px 20px rgba(0, 174, 239, 0.2);
 }

@@ -44,32 +44,104 @@ def rosters():
         selected_team = teams[0]
 
     cur.execute("""
-            SELECT name, position
-              FROM players
-             WHERE team = %s
-          ORDER BY
-            CASE WHEN position = 'G' THEN 3
-                 WHEN position = 'D' THEN 2
-                 ELSE 1
-            END,
-            name;
+            SELECT name, potential,age,weight,height, position, shooting, determination,passing,vision,dman_defense,forward_defense,skating,
+                   speed, rebound_control, technique,glove,blocker,puck_handling, composure,overall_rating
+            FROM players
+            WHERE team= %s
+            ORDER BY position,name;
         """, (selected_team,))
     players = cur.fetchall()
     cur.close()
+    col_indices = {
+        'name': 0, 'potential': 1, 'age': 2, 'weight': 3, 'height': 4, 'position': 5,
+        'shooting': 6, 'determination': 7, 'passing': 8, 'vision': 9, 'dman_defense': 10,
+        'forward_defense': 11, 'skating': 12, 'speed': 13, 'rebound_control': 14,
+        'technique': 15, 'glove': 16, 'blocker': 17, 'puck_handling': 18, 'composure': 19,
+        'overall_rating': 20
+    }
 
-    roster = {'Forwards': [], 'Defense': [], 'Goalies': []}
-    for name, position in players:
+    forwards= []
+    defensemen = []
+    goalies = []
+
+    for player in players:
+        position = player[5]  # position is the 6th element (0-indexed)
         if position == 'G':
-            roster['Goalies'].append(name)
-        elif position in ('LD', 'RD', 'LD/RD'):
-            roster['Defense'].append(name)
+            goalie_data = (
+                player[col_indices['name']],
+                player[col_indices['potential']],
+                player[col_indices['age']],
+                player[col_indices['weight']],
+                player[col_indices['height']],
+                player[col_indices['position']],
+                player[col_indices['glove']],
+                player[col_indices['blocker']],
+                player[col_indices['rebound_control']],
+                player[col_indices['composure']],
+                player[col_indices['overall_rating']]
+            )
+            goalies.append(goalie_data)
+        elif 'D' in position.upper():
+            defenseman_data = (
+                player[col_indices['name']],
+                player[col_indices['potential']],
+                player[col_indices['position']],
+                player[col_indices['age']],
+                player[col_indices['height']],
+                player[col_indices['weight']],
+                player[col_indices['shooting']],
+                player[col_indices['determination']],
+                player[col_indices['passing']],
+                player[col_indices['vision']],
+                player[col_indices['dman_defense']],  # Using the defensive stat for defensemen
+                player[col_indices['skating']],
+                player[col_indices['speed']],
+                player[col_indices['overall_rating']]
+            )
+            defensemen.append(defenseman_data)
         else:
-            roster['Forwards'].append(name)
+            forward_data = (
+                player[col_indices['name']],
+                player[col_indices['potential']],
+                player[col_indices['age']],
+                player[col_indices['weight']],
+                player[col_indices['height']],
+                player[col_indices['position']],
+                player[col_indices['shooting']],
+                player[col_indices['determination']],
+                player[col_indices['passing']],
+                player[col_indices['vision']],
+                player[col_indices['forward_defense']],  # Using forward_defense for forwards
+                player[col_indices['skating']],
+                player[col_indices['speed']],
+                player[col_indices['overall_rating']]
+            )
+            forwards.append(forward_data)
+
+    forwards_columns= [
+        'Name', 'Potential', 'Age', 'Weight', 'Height', 'Position', 'Shooting',
+        'Determination', 'Passing', 'Vision', 'Forward Defense', 'Skating',
+        'Speed', 'Overall'
+    ]
+    defensemen_columns = [
+        'Name', 'Position', 'Age', 'Height', 'Weight', 'Shooting', 'Determination', 'Passing',
+        'Vision', 'Forward Defense', 'Skating', 'Speed', 'Overall'
+    ]
+    goalies_columns = [
+        'Name', 'Potential', 'Age', 'Weight', 'Height', 'Position', 'Glove',
+        'Blocker', 'Rebound Control', 'Composure', 'Overall'
+    ]
 
     return render_template(
         'roster.html',
         teams=teams,
         selected_team=selected_team,
-        roster=roster
+        players= players,
+        forwards = forwards,
+        defensemen=defensemen,
+        goalies=goalies,
+        forwards_columns=forwards_columns,
+        defensemen_columns=defensemen_columns,
+        goalies_columns=goalies_columns
     )
 
