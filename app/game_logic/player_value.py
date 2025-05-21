@@ -16,18 +16,42 @@ class playerValue(player_gen.player_generation):
             player_value= player_value+10
 
         if self.potential == "Low Elite":
-            player_value=player_value+10
+            player_value=player_value+20
         elif self.potential == "Medium Elite":
-            player_value= player_value+20
+            player_value= player_value+30
         elif self.potential == "Elite":
-            player_value = player_value+35
+            player_value = player_value+50
         elif self.potential == "Low Top 6":
-            player_value = player_value +5
-        elif self.potential == "Medium Top 6":
-            player_value = player_value +7
-        elif self.potential == "High Top 6":
             player_value = player_value +10
-        elif self.potential ==
+        elif self.potential == "Medium Top 6":
+            player_value = player_value +15
+        elif self.potential == "High Top 6":
+            player_value = player_value +25
+        elif self.potential == "High Top 4":
+            player_value += +25
+        elif self.potential == "Medium Top 4":
+            player_value+= 20
+        elif self.potential == "Low Top 4":
+            player_value += 15
+        elif self.potential == "Starter":
+            player_value+= 20
+        elif self.potential == "Medium Starter":
+            player_value += 13
+        elif self.potential == "Low Starter":
+            player_value += 8
+        elif self.potential == "Backup":
+            player_value+= 3
+
+        if self.overall_rating> 95:
+            player_value+= 50
+        elif self.overall_rating> 80 and self.overall_rating<95:
+            player_value+= 35
+        elif self.overall_rating> 70 and self.overall_rating<80:
+            player_value+= 15
+        else:
+            player_value+=5
+
+
 
 
 
