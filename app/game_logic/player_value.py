@@ -28,7 +28,7 @@ class playerValue(player_gen.player_generation):
         elif self.potential == "High Top 6":
             player_value = player_value +25
         elif self.potential == "High Top 4":
-            player_value += +25
+            player_value += 25
         elif self.potential == "Medium Top 4":
             player_value+= 20
         elif self.potential == "Low Top 4":
@@ -50,6 +50,8 @@ class playerValue(player_gen.player_generation):
             player_value+= 15
         else:
             player_value+=5
+
+        return player_value
 
 
 

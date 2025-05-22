@@ -145,3 +145,6 @@ def rosters():
         goalies_columns=goalies_columns
     )
 
+@app.route('/trades', methods=['GET'])
+def trades():
+    return render_template('trades.html')
