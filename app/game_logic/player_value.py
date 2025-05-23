@@ -1,4 +1,4 @@
-import player_gen
+from . import player_gen
 
 class playerValue(player_gen.player_generation):
     def __init__(self,name,position,potential,age,overall_rating):
@@ -14,6 +14,10 @@ class playerValue(player_gen.player_generation):
 
         if self.age<23:
             player_value= player_value+10
+        elif self.age>32:
+            player_value -= -15
+        elif self.age>35:
+            player_value -= -20
 
         if self.potential == "Low Elite":
             player_value=player_value+20
@@ -52,11 +56,5 @@ class playerValue(player_gen.player_generation):
             player_value+=5
 
         return player_value
-
-
-
-
-
-
 
 

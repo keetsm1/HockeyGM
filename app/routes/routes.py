@@ -1,11 +1,9 @@
 from flask import render_template, request,session
 from app import app  # this imports the app object created in __init__.py
 from app.game_logic import player_gen
-# from app.game_logic.sqldb import reset_database
 app.secret_key= "kobe"
 from app.game_logic.sqldb import conn
-
-print(app.url_map)
+from app.game_logic.player_value import playerValue
 
 @app.route('/')
 def home():
@@ -145,6 +143,71 @@ def rosters():
         goalies_columns=goalies_columns
     )
 
-@app.route('/trades', methods=['GET'])
+@app.route('/trades', methods=['GET', 'POST'])
 def trades():
-    return render_template('trades.html')
+    current_team = session.get('team_name', 'Your Team')
+    selected_team = request.args.get('team', current_team)
+
+    #below gets us all team names:
+    cur = conn.cursor()
+
+    cur.execute("SELECT DISTINCT team FROM players ORDER by team;")
+
+    teams = [row[0] for row in cur.fetchall()]
+
+    if not selected_team and teams:
+        selected_team = teams[0]
+
+    #below gets us all team players:
+    cur.execute("""
+                SELECT name, potential,age,weight,height, position, overall_rating
+                FROM players
+                WHERE team= %s
+                ORDER BY overall_rating DESC;
+            """, (current_team,))
+    players = cur.fetchall()
+
+    cur.execute("""
+                    SELECT name, potential,age,weight,height, position, overall_rating
+                    FROM players
+                    WHERE team= %s
+                    ORDER BY overall_rating DESC;
+                """, (selected_team,))
+    other_players = cur.fetchall()
+
+
+
+
+    col_indices = {
+        'name': 0, 'potential': 1, 'age': 2, 'weight': 3, 'height': 4, 'position': 5,
+        'overall_rating': 6
+    }
+    player_values = []
+    for player in players:
+        name = player[col_indices['name']]
+        position = player[col_indices['position']]
+        potential = player[col_indices['potential']]
+        age = player[col_indices['age']]
+        overall_rating = player[col_indices['overall_rating']]
+
+
+        value = playerValue(name, position, potential, age, overall_rating)
+        player_values.append((name, value.calculate_value()))
+
+    columns= [
+        'Name', 'Potential', 'Age', 'Weight', 'Height', 'Position', 'Overall Rating', 'Player Value'
+    ]
+
+
+    return render_template(
+        'trades.html',
+        teams= teams,
+        current_team= current_team,
+        selected_team= selected_team,
+        players= players,
+        other_players= other_players,
+        columns = columns,
+        col_indices= col_indices,
+        player_values= player_values
+        )
+

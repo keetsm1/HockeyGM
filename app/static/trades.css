@@ -1,4 +1,3 @@
-/* Keeping your existing styles */
 body {
   background-color: #000000;
   margin: 0;
@@ -12,7 +11,6 @@ body {
   height: 100%;
   width: 160px;
   position: fixed;
-  z-index: 1;
   top: 0;
   left: 0;
   background-color: #111;
@@ -33,5 +31,103 @@ body {
 .sidebar a:hover {
   background-color: #00AEEF;
   color: #000000;
+}
+
+table {
+  width: fit-content;
+  max-width: 90%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 15px;
+  font-size: 11px; /* slightly smaller */
+  background-color: #121212;
+  border-radius: 4px; /* slightly tighter corners */
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(0, 174, 239, 0.12); /* lighter shadow */
+}
+
+table th, table td {
+  padding: 4px 8px; /* reduced padding */
+  text-align: left;
+  white-space: nowrap;
+}
+
+table th {
+  background-color: #1E1E1E;
+  color: #00AEEF;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 10px; /* slightly smaller */
+  letter-spacing: 0.4px;
+  border-bottom: 1px solid #00AEEF; /* thinner line */
+}
+
+table tr:nth-child(odd) {
+  background-color: #1A1A1A;
+}
+
+table tr:nth-child(even) {
+  background-color: #121212;
+}
+
+table tr:hover {
+  background-color: #232323;
+  transform: translateY(-0.5px); /* reduced lift effect */
+}
+
+table td {
+  color: #B0BEC5;
+  border-bottom: 1px solid #2A2A2A; /* more subtle */
+  font-size: 11px;
+}
+
+/* Optional styling */
+table td.highlight {
+  color: #00AEEF;
+  font-weight: 500;
+}
+
+table td:first-child {
+  font-weight: 500;
+  color: #90A4AE;
+}
+
+table:hover {
+  box-shadow: 0 4px 14px rgba(0, 174, 239, 0.15); /* toned down */
+}
+
+.content {
+  margin-left: 180px; /* or 175px if you prefer */
+  padding: 20px;
+}
+
+.value-bar-container {
+    background-color: #ddd;
+    width: 100px;
+    height: 12px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.value-bar {
+    height: 100%;
+    border-radius: 4px;
+}
+
+.value-bar[data-value] {
+    background-color: red;
+}
+
+.value-bar[data-value]:not([data-value=""])::after {
+    content: "";
+    display: block;
+}
+
+.value-bar[data-value]:not([data-value=""]) {
+    background-color: #4caf50;
+}
+
+.value-bar[data-value]:not([data-value=""]) {
+    background-color: orange;
 }
 
