@@ -14,7 +14,10 @@ Key Features:
 
 🧩 Modular Design: Separated logic into backend (Python) and front-end views for maintainability.  (In Progress)
 
+** Currently Working on Trade Screen and Logic **
 ![image](https://github.com/user-attachments/assets/0a90481d-99b1-4ec6-a551-4a92bd2746aa)
 ![image](https://github.com/user-attachments/assets/da2d6e1c-cc07-4a1e-99e8-6636c113339e)
-![image](https://github.com/user-attachments/assets/ce9d50a6-7ac2-4cb0-ad26-c71263989615)
+![image](https://github.com/user-attachments/assets/dd79257b-ca65-4d72-bd95-389f701dab5a)
+![image](https://github.com/user-attachments/assets/93a15c0b-a48c-4339-90b1-0bf7439bef3e)
+
 
