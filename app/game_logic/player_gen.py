@@ -510,18 +510,17 @@ class player_generation:
         all_goalies.sort(key=lambda p: p.overall_rating_goalies(), reverse=True)
 
         def distribute_evenly(players, per_team, teams):
-            # Shuffle slices of players to create mix
-            chunks = [players[i::len(teams)] for i in range(len(teams))]
-            for chunk in chunks:
-                random.shuffle(chunk)
-
+            random.shuffle(players)
             distributed = {team: [] for team in teams}
+            total_needed = per_team * len(teams)
+
             for i, team in enumerate(teams):
                 for j in range(per_team):
-                    try:
-                        distributed[team].append(chunks[j][i])
-                    except IndexError:
-                        pass  # not enough players to fill every slot
+                    index = i * per_team + j
+                    if index < len(players):
+                        distributed[team].append(players[index])
+                    else:
+                        break  # Not enough players left
             return distributed
 
         forwards_by_team = distribute_evenly(all_forwards, 15, NHL_TEAMS)

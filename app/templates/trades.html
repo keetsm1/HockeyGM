@@ -19,8 +19,10 @@
     <a href="#">Draft</a>
 </div>
 
+
 <div class="content">
     <head>{{current_team}}</head>
+    <h1 class="current-team-offers">{{current_team}} Offers:</h1>
     <form method ="post" action="{{ url_for('trades') }}">
         <table>
         <thead>
@@ -34,9 +36,12 @@
         {% for player in players %}
         <tr>
             <td>
-            <input type="checkbox" name="team2_players" value="{{ player[col_indices['name']] }}">
-            {{ player[col_indices['name']] }}
-             </td>
+                <input type="checkbox"
+                       name="team2_players"
+                       value="{{ player[col_indices['name']] }}"
+                       onchange="updateOffers(this)">
+                {{ player[col_indices['name']] }}
+            </td>
             <td>{{ player[col_indices['potential']] }}</td>
             <td>{{ player[col_indices['age']] }}</td>
             <td>{{ player[col_indices['weight']] }}</td>
@@ -57,7 +62,8 @@
         </tbody>
     </table>
 
-        <form method="get" action="{{ url_for('trades') }}">
+    </form>
+     <form method="get" action="{{ url_for('trades') }}">
             <label for="team">Choose a team:</label>
             <select name="team" id="team" onchange="this.form.submit()">
                 {% for team in teams %}
@@ -67,8 +73,6 @@
         </form>
 
     <head>{{selected_team}}</head>
-
-
     <table>
         <thead>
         <tr>
@@ -102,7 +106,7 @@
         </tbody>
     </table>
 
-    </form>
+
 </div>
 </body>
 </html>

@@ -99,6 +99,7 @@ table:hover {
 .content {
   margin-left: 180px; /* or 175px if you prefer */
   padding: 20px;
+  position: relative;
 }
 
 .value-bar-container {
@@ -129,5 +130,19 @@ table:hover {
 
 .value-bar[data-value]:not([data-value=""]) {
     background-color: orange;
+}
+
+.content {
+  position: relative; /* required for absolute children */
+}
+
+.current-team-offers {
+  position: absolute;
+  top: 20px;    /* distance from the top of .content */
+  right: 50px;  /* distance from the right side */
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;    /* remove default h1 margin */
+  z-index: 10;  /* ensure it's on top if needed */
 }
 
