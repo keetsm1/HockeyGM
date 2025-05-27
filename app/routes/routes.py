@@ -4,6 +4,11 @@ from app.game_logic import player_gen
 app.secret_key= "kobe"
 from app.game_logic.sqldb import conn
 from app.game_logic.player_value import playerValue
+from flask import render_template, request, session, flash, redirect, url_for
+from app.game_logic import player_value
+from app.game_logic.sqldb import fetch_all_team_names, fetch_team_roster
+
+
 
 @app.route('/')
 def home():
@@ -28,10 +33,12 @@ def sidebar_home():
 
 @app.route('/rosters', methods=['GET'])
 def rosters():
-    current_team_name= session.get('team_name',None)
+    current = session.get('team_name')
+    teams = fetch_all_team_names()
+    selected_team = request.args.get('team', current or (teams[0] if teams else None))
 
-    selected_team= request.args.get('team', current_team_name)
-
+    # YOUR single source of truth for the roster
+    players = fetch_team_roster(selected_team)
     cur=conn.cursor()
 
     cur.execute("SELECT DISTINCT team FROM players ORDER by team;")
@@ -122,8 +129,8 @@ def rosters():
         'Speed', 'Overall'
     ]
     defensemen_columns = [
-        'Name', 'Position', 'Age', 'Height', 'Weight', 'Shooting', 'Determination', 'Passing',
-        'Vision', 'Forward Defense', 'Skating', 'Speed', 'Overall'
+        'Name','Potential', 'Position', 'Age', 'Height', 'Weight', 'Shooting', 'Determination', 'Passing',
+        'Vision', 'Defense', 'Skating', 'Speed', 'Overall'
     ]
     goalies_columns = [
         'Name', 'Potential', 'Age', 'Weight', 'Height', 'Position', 'Glove',
@@ -145,69 +152,113 @@ def rosters():
 
 @app.route('/trades', methods=['GET', 'POST'])
 def trades():
-    current_team = session.get('team_name', 'Your Team')
+    current_team  = session.get('team_name', 'Your Team')
     selected_team = request.args.get('team', current_team)
 
-    #below gets us all team names:
-    cur = conn.cursor()
-
-    cur.execute("SELECT DISTINCT team FROM players ORDER by team;")
-
-    teams = [row[0] for row in cur.fetchall()]
-
+    # ─── get all team names in one call ───
+    teams = fetch_all_team_names()
     if not selected_team and teams:
         selected_team = teams[0]
 
-    #below gets us all team players:
-    cur.execute("""
-                SELECT name, potential,age,weight,height, position, overall_rating
-                FROM players
-                WHERE team= %s
-                ORDER BY overall_rating DESC;
-            """, (current_team,))
-    players = cur.fetchall()
+    # ─── use the same roster helper for BOTH sides ───
+    players       = fetch_team_roster(current_team)
+    other_players = fetch_team_roster(selected_team)
 
-    cur.execute("""
-                    SELECT name, potential,age,weight,height, position, overall_rating
-                    FROM players
-                    WHERE team= %s
-                    ORDER BY overall_rating DESC;
-                """, (selected_team,))
-    other_players = cur.fetchall()
-
-
-
-
+    # ─── compute values just like before ───
     col_indices = {
-        'name': 0, 'potential': 1, 'age': 2, 'weight': 3, 'height': 4, 'position': 5,
+        'name': 0, 'potential': 1, 'age': 2,
+        'weight': 3, 'height': 4, 'position': 5,
         'overall_rating': 6
     }
+
     player_values = []
     for player in players:
-        name = player[col_indices['name']]
-        position = player[col_indices['position']]
-        potential = player[col_indices['potential']]
-        age = player[col_indices['age']]
-        overall_rating = player[col_indices['overall_rating']]
-
+        name            = player[col_indices['name']]
+        position        = player[col_indices['position']]
+        potential       = player[col_indices['potential']]
+        age             = player[col_indices['age']]
+        overall_rating  = player[col_indices['overall_rating']]
 
         value = playerValue(name, position, potential, age, overall_rating)
         player_values.append((name, value.calculate_value()))
 
-    columns= [
-        'Name', 'Potential', 'Age', 'Weight', 'Height', 'Position', 'Overall Rating', 'Player Value'
-    ]
+    other_player_values = []
+    for player in other_players:
+        name   = player[col_indices['name']]
+        pos    = player[col_indices['position']]
+        pot    = player[col_indices['potential']]
+        age    = player[col_indices['age']]
+        rating = player[col_indices['overall_rating']]
 
+        val = playerValue(name, pos, pot, age, rating)
+        other_player_values.append((name, val.calculate_value()))
+
+    columns = [
+        'Name', 'Potential', 'Age',
+        'Weight', 'Height', 'Position',
+        'Overall Rating', 'Player Value'
+    ]
 
     return render_template(
         'trades.html',
-        teams= teams,
-        current_team= current_team,
-        selected_team= selected_team,
-        players= players,
-        other_players= other_players,
-        columns = columns,
-        col_indices= col_indices,
-        player_values= player_values
+        teams=teams,
+        current_team=current_team,
+        selected_team=selected_team,
+        players=players,
+        other_players=other_players,
+        columns=columns,
+        col_indices=col_indices,
+        player_values=player_values,
+        other_player_values=other_player_values
+    )
+
+@app.route('/propose_trade', methods=['POST'])
+def propose_trade():
+    current_team  = session.get('team_name', 'Your Team')
+    selected_team = request.form.get('team', current_team)
+
+    team1_names = request.form.getlist('team1_players')
+    team2_names = request.form.getlist('team2_players')
+
+    cur = conn.cursor()
+
+    def fetch_valobj(name):
+        cur.execute(
+            "SELECT name, position, potential, age, overall_rating "
+            "FROM players WHERE name = %s",
+            (name,)
         )
+        row = cur.fetchone()
+        return playerValue(*row) if row else None
+
+    team1_objs = [o for n in team1_names if (o := fetch_valobj(n))]
+    team2_objs = [o for n in team2_names if (o := fetch_valobj(n))]
+
+    # check fairness
+    fair = playerValue.isTradeFair(team1_objs, team2_objs)
+
+    if fair:
+        #move team1 players to selected_team
+        for name in team1_names:
+            cur.execute(
+                "UPDATE players SET team = %s WHERE name = %s",
+                (selected_team, name)
+            )
+
+        #move team2 players to current_team
+        for name in team2_names:
+            cur.execute(
+                "UPDATE players SET team = %s WHERE name = %s",
+                (current_team, name)
+            )
+
+        # commit once
+        conn.commit()
+        flash("Trade completed successfully! ✅")
+
+    else:
+        flash("Trade is NOT fair — no changes applied. ❌")
+
+    cur.close()
+    return redirect(url_for('trades', team=selected_team))
 

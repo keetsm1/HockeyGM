@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title> Trades </title>
-     <link rel="stylesheet" href="{{ url_for('static', filename='trades.css')}}">
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Trades</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='trades.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-<div class="sidebar">
+  <div class="sidebar">
     <a href="{{ url_for('sidebar_home') }}">Home</a>
     <a href="#">Lines</a>
     <a href="{{ url_for('trades') }}">Trades</a>
@@ -17,96 +17,171 @@
     <a href="#">Free Agents</a>
     <a href="#">Staff</a>
     <a href="#">Draft</a>
-</div>
+  </div>
 
+  <div class="content">
 
-<div class="content">
-    <head>{{current_team}}</head>
-    <h1 class="current-team-offers">{{current_team}} Offers:</h1>
-    <form method ="post" action="{{ url_for('trades') }}">
-        <table>
-        <thead>
-        <tr>
-            {% for col in columns %}
-                <th>{{ col }}</th>
-            {% endfor %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for player in players %}
-        <tr>
-            <td>
-                <input type="checkbox"
-                       name="team2_players"
-                       value="{{ player[col_indices['name']] }}"
-                       onchange="updateOffers(this)">
-                {{ player[col_indices['name']] }}
-            </td>
-            <td>{{ player[col_indices['potential']] }}</td>
-            <td>{{ player[col_indices['age']] }}</td>
-            <td>{{ player[col_indices['weight']] }}</td>
-            <td>{{ player[col_indices['height']] }}</td>
-            <td>{{ player[col_indices['position']] }}</td>
-            <td>{{ player[col_indices['overall_rating']] }}</td>
-
-             <td>
-                {% set value = player_values[loop.index0][1] %}
-                <div class="value-bar-container">
-                    <div class="value-bar" style="width: {{ value }}px;"
-                         data-value="{{ value }}"></div>
-                </div>
-            </td>
-
-        </tr>
+    <!-- opponent selector -->
+    <form method="get" action="{{ url_for('trades') }}" class="team-select-form">
+      <label for="team">Choose opponent:</label>
+      <select name="team" id="team" onchange="this.form.submit()">
+        {% for t in teams %}
+          <option value="{{ t }}" {% if t==selected_team %}selected{% endif %}>{{ t }}</option>
         {% endfor %}
-        </tbody>
-    </table>
-
+      </select>
     </form>
-     <form method="get" action="{{ url_for('trades') }}">
-            <label for="team">Choose a team:</label>
-            <select name="team" id="team" onchange="this.form.submit()">
-                {% for team in teams %}
-                    <option value="{{ team }}" {% if team == selected_team %}selected{% endif %}>{{ team }}</option>
-                {% endfor %}
-            </select>
-        </form>
 
-    <head>{{selected_team}}</head>
-    <table>
-        <thead>
-        <tr>
-            {% for col in columns %}
-                <th>{{ col }}</th>
+    <!-- everything below posts to /propose_trade -->
+    <form id="trade-form" method="post" action="{{ url_for('propose_trade') }}">
+
+      <!-- carry forward the selected team -->
+      <input type="hidden" name="team" value="{{ selected_team }}">
+
+      <div class="tables">
+        <!-- YOUR TEAM -->
+        <head>{{ current_team }}</head>
+        <table>
+          <thead>
+            <tr>{% for c in columns %}<th>{{ c }}</th>{% endfor %}</tr>
+          </thead>
+          <tbody>
+            {% for p in players %}
+              {% set val = player_values[loop.index0][1] %}
+              <tr>
+                <td>
+                  <input
+                    type="checkbox"
+                    class="team1-checkbox"
+                    name="team1_players"
+                    value="{{ p[col_indices['name']] }}"
+                    data-name="{{ p[col_indices['name']] }}"
+                    data-value="{{ val }}"
+                    onchange="updateOffers()"
+                  >
+                  {{ p[col_indices['name']] }}
+                </td>
+                <td>{{ p[col_indices['potential']] }}</td>
+                <td>{{ p[col_indices['age']] }}</td>
+                <td>{{ p[col_indices['weight']] }}</td>
+                <td>{{ p[col_indices['height']] }}</td>
+                <td>{{ p[col_indices['position']] }}</td>
+                <td>{{ p[col_indices['overall_rating']] }}</td>
+                <td>
+                  <div class="value-bar-container">
+                    <div class="value-bar" style="width: {{ val }}px" data-value="{{ val }}"></div>
+                  </div>
+                </td>
+              </tr>
             {% endfor %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for player in other_players %}
-        <tr>
-             <td>
-            <input type="checkbox" name="team2_players" value="{{ player[col_indices['name']] }}">
-            {{ player[col_indices['name']] }}
-             </td>
-            <td>{{ player[col_indices['potential']] }}</td>
-            <td>{{ player[col_indices['age']] }}</td>
-            <td>{{ player[col_indices['weight']] }}</td>
-            <td>{{ player[col_indices['height']] }}</td>
-            <td>{{ player[col_indices['position']] }}</td>
-            <td>{{ player[col_indices['overall_rating']] }}</td>
-            <td>
-                {% set value = player_values[loop.index0][1] %}
-                <div class="value-bar-container">
-                    <div class="value-bar" style="width: {{ value }}px;"
-                         data-value="{{ value }}"></div>
-                </div>
-            </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+          </tbody>
+        </table>
 
+        <!-- OPPONENT TEAM -->
+        <head>{{ selected_team }}</head>
+        <table>
+          <thead>
+            <tr>{% for c in columns %}<th>{{ c }}</th>{% endfor %}</tr>
+          </thead>
+          <tbody>
+            {% for p in other_players %}
+              {% set val = other_player_values[loop.index0][1] %}
+              <tr>
+                <td>
+                  <input
+                    type="checkbox"
+                    class="team2-checkbox"
+                    name="team2_players"
+                    value="{{ p[col_indices['name']] }}"
+                    data-name="{{ p[col_indices['name']] }}"
+                    data-value="{{ val }}"
+                    onchange="updateOffers()"
+                  >
+                  {{ p[col_indices['name']] }}
+                </td>
+                <td>{{ p[col_indices['potential']] }}</td>
+                <td>{{ p[col_indices['age']] }}</td>
+                <td>{{ p[col_indices['weight']] }}</td>
+                <td>{{ p[col_indices['height']] }}</td>
+                <td>{{ p[col_indices['position']] }}</td>
+                <td>{{ p[col_indices['overall_rating']] }}</td>
+                <td>
+                  <div class="value-bar-container">
+                    <div class="value-bar" style="width: {{ val }}px" data-value="{{ val }}"></div>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
 
-</div>
+      <!-- RIGHT SIDE SUMMARY -->
+      <div class="trade-summary">
+        <h2>{{ current_team }} Offers:</h2>
+        <ul id="team1-list"></ul>
+
+        <h2>{{ selected_team }} Offers:</h2>
+        <ul id="team2-list"></ul>
+
+        <button type="submit" id="propose-trade" disabled>Propose Trade</button>
+
+        <div id="fairness-bar">
+          <div id="fairness-fill"></div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', updateOffers);
+
+  function updateOffers() {
+    const list1 = document.getElementById('team1-list');
+    const list2 = document.getElementById('team2-list');
+    const btn   = document.getElementById('propose-trade');
+    const fill  = document.getElementById('fairness-fill');
+    const threshold = 5;  // same as your backend
+
+    // Reset the lists and sums
+    list1.innerHTML = '';
+    list2.innerHTML = '';
+    let sum1 = 0, sum2 = 0;
+
+    // Team 1: gather checked boxes
+    document.querySelectorAll('.team1-checkbox:checked').forEach(cb => {
+      const name = cb.value;            // the player name
+      const val  = +cb.dataset.value;   // the numeric value
+      sum1 += val;
+
+      // append to UL
+      const li = document.createElement('li');
+      li.textContent = name;
+      list1.appendChild(li);
+    });
+
+    // Team 2: same process
+    document.querySelectorAll('.team2-checkbox:checked').forEach(cb => {
+      const name = cb.value;
+      const val  = +cb.dataset.value;
+      sum2 += val;
+
+      const li = document.createElement('li');
+      li.textContent = name;
+      list2.appendChild(li);
+    });
+
+    // Update fairness bar (Team 1’s share)
+    const max = Math.max(sum1, sum2) || 1;
+    fill.style.width = (sum1 / max * 100) + '%';
+
+    // Button logic: auto-accept if Team 1 > Team 2, else within threshold
+    if (sum1 > sum2 || (sum2 - sum1) <= threshold) {
+      btn.disabled = false;
+    } else {
+      btn.disabled = true;
+    }
+  }
+</script>
+
 </body>
 </html>
