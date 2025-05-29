@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52994e4e-aadc-4edd-a63c-4dc634d16fb9" name="Changes" comment="Trade screen updates &amp; changed how players are distrubuted among teams">
+    <list default="true" id="52994e4e-aadc-4edd-a63c-4dc634d16fb9" name="Changes" comment="Trade screen and trade scenarios betweeen players completed. Will return to this once game simulation and scheduling has been completed for draft picks. Fixed some bugs with trade dealer and will be updated again once draft picks are added.">
+      <change afterPath="$PROJECT_DIR$/app/game_logic/game_engine.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/game_logic/player_development.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/game_logic/player_value.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/game_logic/player_value.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/game_logic/sqldb.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/game_logic/sqldb.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/trades.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/trades.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/trades.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/trades.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +18,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -228,7 +226,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748032410692</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Trade screen and trade scenarios betweeen players completed. Will return to this once game simulation and scheduling has been completed for draft picks. Fixed some bugs with trade dealer and will be updated again once draft picks are added.">
+      <option name="closed" value="true" />
+      <created>1748371020700</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1748371020700</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -240,6 +246,7 @@
     <MESSAGE value="Sidebar and fixed db" />
     <MESSAGE value="Started working on individual player values for trade screen." />
     <MESSAGE value="Trade screen updates &amp; changed how players are distrubuted among teams" />
-    <option name="LAST_COMMIT_MESSAGE" value="Trade screen updates &amp; changed how players are distrubuted among teams" />
+    <MESSAGE value="Trade screen and trade scenarios betweeen players completed. Will return to this once game simulation and scheduling has been completed for draft picks. Fixed some bugs with trade dealer and will be updated again once draft picks are added." />
+    <option name="LAST_COMMIT_MESSAGE" value="Trade screen and trade scenarios betweeen players completed. Will return to this once game simulation and scheduling has been completed for draft picks. Fixed some bugs with trade dealer and will be updated again once draft picks are added." />
   </component>
 </project>
