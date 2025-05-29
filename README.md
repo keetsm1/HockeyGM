@@ -17,7 +17,8 @@ Key Features:
 ** Currently Working on Trade Screen and Logic **
 ![image](https://github.com/user-attachments/assets/0a90481d-99b1-4ec6-a551-4a92bd2746aa)
 ![image](https://github.com/user-attachments/assets/da2d6e1c-cc07-4a1e-99e8-6636c113339e)
-![image](https://github.com/user-attachments/assets/dd79257b-ca65-4d72-bd95-389f701dab5a)
-![image](https://github.com/user-attachments/assets/93a15c0b-a48c-4339-90b1-0bf7439bef3e)
+![image](https://github.com/user-attachments/assets/af1a0a01-80f3-40e4-83b5-4c84b0b7ef73)
+![image](https://github.com/user-attachments/assets/888f16cf-0728-422d-8a7a-eb797f9338ac)
+
 
 
