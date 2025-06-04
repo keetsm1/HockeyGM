@@ -1,3 +1,5 @@
+from calendar import firstweekday
+
 from flask import render_template, request,session
 from app import app  # this imports the app object created in __init__.py
 from app.game_logic import player_gen
@@ -9,6 +11,19 @@ from app.game_logic import player_value
 from app.game_logic.sqldb import fetch_all_team_names, fetch_team_roster
 from app.game_logic.game_engine import GameEngine
 
+import calendar
+from datetime import date
+
+engine= GameEngine()
+
+def ensure_players_exist():
+    cur = conn.cursor()
+    cur.execute("SELECT COUNT(*) FROM players;")
+    count = cur.fetchone()[0]
+    if count == 0:
+        generator = player_gen.player_generation()
+        generator.create_players()
+    cur.close()
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -21,14 +36,72 @@ def newGame():
 def startGame():
     team_name= request.form['team']
     session['team_name']= team_name
-    player = player_gen.player_generation()
-    player.create_players()
-    return render_template('game.html', team= team_name)
+    ensure_players_exist()
+    engine.start_season()
 
-@app.route('/home-screen-managing-hockey-gm', methods= ['GET'])
+    year= int(request.args.get('year',2025))
+    month = int(request.args.get('month', 10))
+
+    first_weekday_mon, days_in_month = calendar.monthrange(year, month)
+    first_weekday_sun = (first_weekday_mon + 1) % 7
+
+    team = session.get('team_name')
+    games_by_day = {}
+
+    for game_date, home, away in engine.schedule:
+        if game_date.year == year and game_date.month == month:
+            if home == team or away == team:
+                d = game_date.day
+                matchup = f"{home} vs {away}"
+                games_by_day.setdefault(d, []).append(matchup)
+
+    return render_template(
+        'game.html',
+        team=team_name,
+        current_month=month,
+        current_year=year,
+        first_weekday_sun=first_weekday_sun,
+        days_in_month=days_in_month,
+        games_by_day=games_by_day
+    )
+
+@app.route('/home-screen-managing-hockey-gm', methods=['GET'])
 def sidebar_home():
-    team_name= session.get('team_name','Default Team')
-    return render_template('game.html', team=team_name)
+    # 1) If no team has been chosen, send them to the “newGame” page.
+    if 'team_name' not in session:
+        return redirect(url_for('newGame'))
+
+    team_name = session['team_name']
+
+    # 2) Ensure schedule exists. If not, kick off a new season.
+    if not hasattr(engine, 'schedule'):
+        engine.start_season()
+
+    #  Read month/year from query params if provided; otherwise default to October 2025
+    month = int(request.args.get('month', 10))
+    year  = int(request.args.get('year', 2025))
+
+    first_weekday_mon, days_in_month = calendar.monthrange(year, month)
+    first_weekday_sun = (first_weekday_mon + 1) % 7
+
+    games_by_day = {}
+    for game_date, home, away in engine.schedule:
+        if game_date.year == year and game_date.month == month:
+            # Only include days involving our team
+            if home == team_name or away == team_name:
+                d = game_date.day
+                matchup = f"{home} vs {away}"
+                games_by_day.setdefault(d, []).append(matchup)
+
+    return render_template(
+        'game.html',
+        team=team_name,
+        current_month=month,
+        current_year=year,
+        first_weekday_sun=first_weekday_sun,
+        days_in_month=days_in_month,
+        games_by_day=games_by_day
+    )
 
 @app.route('/rosters', methods=['GET'])
 def rosters():

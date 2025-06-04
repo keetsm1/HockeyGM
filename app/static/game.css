@@ -1,14 +1,24 @@
+/* ─── Global body & header ─── */
 body {
-  background-color: #000000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  font-family: 'Montserrat', sans-serif;
-  color: #B0BEC5; /* Light gray for text */
+  background-color: #0d0d0d;
+  color: #fafafa;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 1rem;
 }
 
+header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #ffc107;
+}
+
+/* ─── Sidebar ─── */
 .sidebar {
   height: 100%;
   width: 160px;
@@ -19,135 +29,105 @@ body {
   background-color: #111;
   overflow-x: hidden;
   padding-top: 20px;
-  border-right: 2px solid #C0C0C0; /* Silver border for separation */
+  border-right: 2px solid #C0C0C0;
 }
 
 .sidebar a {
   padding: 10px 15px;
   text-decoration: none;
   font-size: 16px;
-  color: #B0BEC5; /* Light gray for links */
+  color: #B0BEC5;
   display: block;
   transition: 0.3s;
 }
 
 .sidebar a:hover {
-  background-color: #00AEEF; /* Ice Blue hover effect */
+  background-color: #00AEEF;
   color: #000000;
 }
 
-.main-content {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto;
-  box-sizing: border-box;
-}
-
-h1 {
-  margin-bottom: 20px;
-  color: #66ccff;
-}
-
-/* Calendar & Controls */
-#calendar {
-  max-width: 800px;
-  margin-bottom: 20px;
-  background: #121212;            /* dark calendar background */
-  border-radius: 4px;
-  padding: 8px;
-}
-
-#controls {
-  margin-bottom: 20px;
-}
-
-#controls button {
-  margin-right: 10px;
-  padding: 8px 16px;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  border-radius: 4px;
-  background: #66ccff;             /* blue accent */
-  color: #0d0d0d;
-  transition: background 0.2s;
-}
-
-#controls button:hover {
-  background: #4aa6d8;
-}
-
-/* Panels */
-#panels {
+/* ─── Month Navigation ─── */
+.nav-months {
   display: flex;
-  gap: 40px;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 160px; /* push right of sidebar */
+  color: #fafafa;
+  font-size: 1rem;
 }
 
-/* Dark “card” style */
-#recent-games,
-#record,
-#standings {
-  background: #1f1f1f;            /* dark panel */
-  border: 1px solid #333;
-  padding: 10px;
-  border-radius: 4px;
+.nav-months a {
+  color: #00aef0;
+  text-decoration: none;
+  padding: 0.2rem 0.5rem;
 }
 
-/* Recent Games */
-#recent-games {
-  flex: 1;
-  max-width: 300px;
+.nav-months a:hover {
+  color: #ffc107;
 }
 
-#recent-games h3 {
-  margin-top: 0;
-  color: #66ccff;
+.nav-months span {
+  font-weight: bold;
 }
 
-#recent-games ul {
-  list-style: none;
-  padding: 0;
-  max-height: 300px;
-  overflow-y: auto;
+/* ─── Calendar Container ─── */
+.calendar-container {
+  margin-left: 160px;     /* account for sidebar width */
+  display: flex;
+  justify-content: center;
 }
 
-#recent-games li {
-  margin-bottom: 6px;
-  font-size: 14px;
-  color: #ccc;
-}
-
-/* Record */
-#record h3 {
-  margin-top: 0;
-  color: #66ccff;
-}
-
-#record p {
-  font-size: 16px;
-}
-
-/* Standings */
-#standings h3 {
-  margin-top: 0;
-  color: #66ccff;
-}
-
-#standings table {
+.calendar {
   width: 100%;
   border-collapse: collapse;
+  margin: 0 auto;
 }
 
-#standings th,
-#standings td {
-  border: 1px solid #333;
-  padding: 6px;
+.calendar th,
+.calendar td {
+  border: 1px solid #444;
+  vertical-align: top;
+  width: 14.2857%;
+  padding: 0.15rem;
+  height: 50px;
+  font-size: 0.7rem;
+}
+
+.calendar th {
+  background-color: #202a44;
+  color: #fafafa;
+  font-weight: normal;
   text-align: center;
-  font-size: 14px;
+  padding: 0.2rem;
 }
 
-#standings th {
-  background: #2a2a2a;
-  color: #e0e0e0;
+.day-cell {
+  background-color: #1b1f2a;
+  padding: 0.1rem;
+  font-size: 0.75rem;
+  color: #eee;
+  position: relative;
+}
+
+.empty-cell {
+  background-color: #0f111a;
+}
+
+.date-number {
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+  color: #ffc107;
+}
+
+.matchup {
+  background-color: #1e88e5;
+  color: #fff;
+  padding: 1px 3px;
+  margin-bottom: 2px;
+  border-radius: 2px;
+  font-size: 0.6rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

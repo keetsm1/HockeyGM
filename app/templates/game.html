@@ -1,15 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title> Managing {{team}} </title>
-     <link rel="stylesheet" href="{{ url_for('static', filename='game.css')}}">
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Managing {{ team }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='game.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
 </head>
 <body>
-<div class="sidebar">
+  <header>
+    <h1>Welcome, {{ team }} GM</h1>
+
+    <!-- Month Navigation Row -->
+    <div class="month-nav">
+      <button id="prev-month">← Prev</button>
+
+      <!-- Dropdown showing all 12 months for quick jumping -->
+      <select id="month-select">
+        {% set month_names = [
+             "January", "February", "March",    "April",
+             "May",     "June",     "July",     "August",
+             "September","October", "November", "December"
+           ] %}
+        {% for i in range(1, 13) %}
+          <option value="{{ i }}"
+            {% if i == current_month %}selected{% endif %}>
+            {{ month_names[i-1] }} {{ current_year }}
+          </option>
+        {% endfor %}
+      </select>
+
+      <button id="next-month">Next →</button>
+
+      <!-- This H2 displays the current month/year. -->
+      <h2 id="month-year">{{ month_names[current_month-1] }} {{ current_year }}</h2>
+    </div>
+  </header>
+
+  <div class="sidebar">
     <a href="{{ url_for('sidebar_home') }}">Home</a>
     <a href="#">Lines</a>
     <a href="{{ url_for('trades') }}">Trades</a>
@@ -17,6 +48,110 @@
     <a href="#">Free Agents</a>
     <a href="#">Staff</a>
     <a href="#">Draft</a>
-</div>
+  </div>
+
+  <div class="calendar-container">
+    <table class="calendar">
+      <thead>
+        <tr>
+          <th>Sun</th>
+          <th>Mon</th>
+          <th>Tue</th>
+          <th>Wed</th>
+          <th>Thu</th>
+          <th>Fri</th>
+          <th>Sat</th>
+        </tr>
+      </thead>
+      <tbody id="calendar-body">
+        {% set ns = namespace(day=1) %}
+        {% for week in range(6) %}
+          <tr>
+            {% for dow in range(7) %}
+              {% set current_cell = week * 7 + dow %}
+              {% set actual_day = current_cell - first_weekday_sun + 1 %}
+
+              {% if current_cell < first_weekday_sun %}
+                <td class="empty-cell"></td>
+
+              {% elif actual_day >= 1 and actual_day <= days_in_month %}
+                <td class="day-cell">
+                  <div class="date-number">{{ actual_day }}</div>
+                  {% set matches = games_by_day.get(actual_day) %}
+                  {% if matches %}
+                    {% for match in matches %}
+                      <div class="matchup">{{ match }}</div>
+                    {% endfor %}
+                  {% endif %}
+                </td>
+
+              {% else %}
+                <td class="empty-cell"></td>
+              {% endif %}
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+  (function() {
+    const monthNames = [
+      "January", "February", "March", "April",
+      "May", "June", "July", "August",
+      "September", "October", "November", "December"
+    ];
+
+    let currentMonth = {{ current_month }}; // 1–12
+    let currentYear  = {{ current_year }};  // e.g. 2025
+
+    const headerEl = document.getElementById("month-year");
+    const selectEl = document.getElementById("month-select");
+    const prevBtn  = document.getElementById("prev-month");
+    const nextBtn  = document.getElementById("next-month");
+
+    function updateHeader() {
+      headerEl.textContent = monthNames[currentMonth - 1] + " " + currentYear;
+    }
+
+    selectEl.addEventListener("change", function(e) {
+      currentMonth = parseInt(e.target.value);
+      selectEl.value = currentMonth;
+      updateHeader();
+      reloadCalendar();
+    });
+
+    prevBtn.addEventListener("click", function() {
+      currentMonth--;
+      if (currentMonth < 1) {
+        currentMonth = 12;
+        currentYear--;
+      }
+      selectEl.value = currentMonth;
+      updateHeader();
+      reloadCalendar();
+    });
+
+    nextBtn.addEventListener("click", function() {
+      currentMonth++;
+      if (currentMonth > 12) {
+        currentMonth = 1;
+        currentYear++;
+      }
+      selectEl.value = currentMonth;
+      updateHeader();
+      reloadCalendar();
+    });
+
+    function reloadCalendar() {
+      // Change 'your_game_route' → 'sidebar_home'
+      window.location.href = `{{ url_for('sidebar_home') }}?month=${currentMonth}&year=${currentYear}`;
+    }
+
+    updateHeader();
+  })();
+</script>
+
 </body>
 </html>

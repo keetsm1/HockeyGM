@@ -236,79 +236,105 @@ class GameEngine:
             'overtime': went_to_ot,
         }
 
-    def round_robin(self,teams):
-        pool= teams[:]
-        if len(pool) % 2:
-            pool.append("BYE")
+    def generate_regular_season_schedule(self):
+        # 0) Fetch all teams once, and guard against None.
+        raw_teams = fetch_all_team_names()
+        if not raw_teams:
+            raise RuntimeError("fetch_all_team_names() returned no teams (None or empty).")
 
-        n= len(pool)
-        schedule=[]
+        # 1) Exclude “FREE AGENT” if present (singular, not “FREE AGENTS”)
+        teams = [t for t in raw_teams if t != "FREE AGENT"]
+        if len(teams) < 2:
+            raise RuntimeError("Need at least two real teams to build a schedule.")
 
-        for _ in range(n-1):
-            pairings = []
-            for i in range(n//2):
-                t1,t2=pool[i], pool[n-1-i]
-                if t1 != "BYE" and t2 != "BYE":
-                    pairings.append((t1,t2))
-            schedule.append(pairings)
+        # 2) Build a single round-robin (each team plays every other team once)
+        first_half = self.round_robin(teams)
 
-            pool= [pool[0]]+[[pool[-1]]]+pool[1:-1]
+        # 3) Flatten into a list of (home, away) tuples
+        first_half_games = []
+        for round_games in first_half:
+            for (home, away) in round_games:
+                first_half_games.append((home, away))
+
+        # 4) Create the second half by swapping home/away
+        second_half_games = [(away, home) for (home, away) in first_half_games]
+
+        # 5) Combine → each team has (N−1)*2 games so far
+        all_games = first_half_games + second_half_games
+
+        # 6) Add 20 extra games per team (10 home, 10 away) for 82 total
+        for team in teams:
+            opponents = [t for t in teams if t != team]
+            random.shuffle(opponents)
+            extra_opponents = opponents[:20]
+
+            for idx, opp in enumerate(extra_opponents):
+                if idx < 10:
+                    # team is home
+                    all_games.append((team, opp))
+                else:
+                    # team is away
+                    all_games.append((opp, team))
+
+        # 7) Shuffle all matchups
+        random.shuffle(all_games)
+
+        # 8) Spread games between Oct 1, 2025 → Apr 17, 2026
+        season_start = date(2025, 10, 1)
+        season_end = date(2026, 4, 17)
+        total_days = (season_end - season_start).days  # 199
+        total_games = len(all_games)  # 1312
+
+        days_list = [season_start + timedelta(days=d) for d in range(total_days + 1)]
+        busy_teams = [set() for _ in range(total_days + 1)]
+        schedule = []
+
+        for i, (home, away) in enumerate(all_games):
+            ideal_idx = (i * total_days) // (total_games - 1)
+
+            placed = False
+            # Try ideal day or later
+            for j in range(ideal_idx, total_days + 1):
+                if (home not in busy_teams[j]) and (away not in busy_teams[j]):
+                    busy_teams[j].add(home)
+                    busy_teams[j].add(away)
+                    schedule.append((days_list[j], home, away))
+                    placed = True
+                    break
+
+            if not placed:
+                # Wrap around
+                for j in range(0, ideal_idx):
+                    if (home not in busy_teams[j]) and (away not in busy_teams[j]):
+                        busy_teams[j].add(home)
+                        busy_teams[j].add(away)
+                        schedule.append((days_list[j], home, away))
+                        placed = True
+                        break
+
+            if not placed:
+                raise RuntimeError(f"Unable to schedule {home} vs {away}—no free day found.")
 
         return schedule
 
-    def generate_regular_season_schedule(self):
+    def round_robin(self, teams):
+        pool = teams[:]
+        if len(pool) % 2 == 1:
+            pool.append("BYE")
 
-        teams=fetch_all_team_names()
-
-        first_half= self.round_robin(teams)
-
-        first_half_games= []
-
-        for games in first_half_games:
-            for (home,away) in games:
-                first_half_games.append((home,away))
-
-
-        second_half_games = []
-
-
-        for (home,away) in first_half_games:
-            second_half_games.append((away,home))
-
-
-        all_games= []
-
-        for g in first_half_games:
-            all_games.append(g)
-        for g in second_half_games:
-            all_games.append(g)
-
-        for team in teams:
-            others = []
-            for t in teams:
-                if t != team:
-                    others.append(t)
-            random.shuffle(others)
-            extra = others[:20]
-            for idx, opp in enumerate(extra):
-                if idx < 10:
-                    # home game
-                    all_games.append((team, opp))
-                else:
-                    # away game
-                    all_games.append((opp, team))
-
-
-        random.shuffle(all_games)
-
-        season_start= date(2025,10,1)
-
+        n = len(pool)
         schedule = []
 
-        for idx in range(len(all_games)):
-            game_day = season_start + timedelta(days=idx)
-            home, away = all_games[idx]
-            schedule.append((game_day, home, away))
+        for _ in range(n - 1):
+            pairings = []
+            for i in range(n // 2):
+                t1, t2 = pool[i], pool[n - 1 - i]
+                if t1 != "BYE" and t2 != "BYE":
+                    pairings.append((t1, t2))
+            schedule.append(pairings)
+
+            # Rotate (keep pool[0] fixed)
+            pool = [pool[0]] + [pool[-1]] + pool[1:-1]
 
         return schedule
 
