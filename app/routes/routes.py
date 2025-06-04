@@ -7,8 +7,7 @@ from app.game_logic.player_value import playerValue
 from flask import render_template, request, session, flash, redirect, url_for
 from app.game_logic import player_value
 from app.game_logic.sqldb import fetch_all_team_names, fetch_team_roster
-
-
+from app.game_logic.game_engine import GameEngine
 
 @app.route('/')
 def home():

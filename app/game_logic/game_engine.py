@@ -1,4 +1,5 @@
 import random
+from datetime import date,timedelta
 from .sqldb import fetch_team_roster, fetch_all_team_names
 
 
@@ -235,6 +236,116 @@ class GameEngine:
             'overtime': went_to_ot,
         }
 
+    def round_robin(self,teams):
+        pool= teams[:]
+        if len(pool) % 2:
+            pool.append("BYE")
+
+        n= len(pool)
+        schedule=[]
+
+        for _ in range(n-1):
+            pairings = []
+            for i in range(n//2):
+                t1,t2=pool[i], pool[n-1-i]
+                if t1 != "BYE" and t2 != "BYE":
+                    pairings.append((t1,t2))
+            schedule.append(pairings)
+
+            pool= [pool[0]]+[[pool[-1]]]+pool[1:-1]
+
+        return schedule
+
+    def generate_regular_season_schedule(self):
+
+        teams=fetch_all_team_names()
+
+        first_half= self.round_robin(teams)
+
+        first_half_games= []
+
+        for games in first_half_games:
+            for (home,away) in games:
+                first_half_games.append((home,away))
 
 
+        second_half_games = []
+
+
+        for (home,away) in first_half_games:
+            second_half_games.append((away,home))
+
+
+        all_games= []
+
+        for g in first_half_games:
+            all_games.append(g)
+        for g in second_half_games:
+            all_games.append(g)
+
+        for team in teams:
+            others = []
+            for t in teams:
+                if t != team:
+                    others.append(t)
+            random.shuffle(others)
+            extra = others[:20]
+            for idx, opp in enumerate(extra):
+                if idx < 10:
+                    # home game
+                    all_games.append((team, opp))
+                else:
+                    # away game
+                    all_games.append((opp, team))
+
+
+        random.shuffle(all_games)
+
+        season_start= date(2025,10,1)
+
+        schedule = []
+
+        for idx in range(len(all_games)):
+            game_day = season_start + timedelta(days=idx)
+            home, away = all_games[idx]
+            schedule.append((game_day, home, away))
+
+        return schedule
+
+    def start_season(self):
+        self.schedule= self.generate_regular_season_schedule()
+        self.current_game_id= 0
+        self.stats= {}
+
+        for t in fetch_all_team_names():
+            self.stats[t] = {"W": 0, "L": 0, "OTL": 0, "PTS": 0}
+
+    def simulate_next_game(self):
+        game_date,home,away = self.schedule[self.current_game_id]
+        outcome = self.simulate_game(home,away)
+
+        winner = outcome['winner']
+        loser= outcome['loser']
+        ot= outcome['overtime']
+
+        self.stats[winner]['W']+= 1
+        self.stats[winner]['PTS'] += 2
+
+        if ot:
+            self.stats[loser]['OTL']+= 1
+            self.stats[loser]['PTS'] += 1
+        else:
+            self.stats[loser]['L'] +=1
+
+        self.current_game_id+=1
+
+        return game_date,home,away,outcome
+
+    def get_remaining_games(self):
+        return self.schedule[self.current_game_id:]
+
+    def get_standings(self):
+        table = [(team, s) for team, s in self.stats.items()]
+        table.sort(key=lambda item: (item[1]['PTS'], item[1]['W']), reverse=True)
+        return table
 
