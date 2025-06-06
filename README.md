@@ -15,10 +15,24 @@ Key Features:
 🧩 Modular Design: Separated logic into backend (Python) and front-end views for maintainability.  (In Progress)
 
 ** Currently Working on Trade Screen and Logic **
+
+Welcome Screen:
 ![image](https://github.com/user-attachments/assets/0a90481d-99b1-4ec6-a551-4a92bd2746aa)
+
+Select Team Screen:
 ![image](https://github.com/user-attachments/assets/da2d6e1c-cc07-4a1e-99e8-6636c113339e)
+
+
+Home Screen:
+![image](https://github.com/user-attachments/assets/495d30ed-db23-49fd-9acb-c18983bcd66c)
+
+
+Roster Screen:
 ![image](https://github.com/user-attachments/assets/af1a0a01-80f3-40e4-83b5-4c84b0b7ef73)
+
+Trade Screen:
 ![image](https://github.com/user-attachments/assets/888f16cf-0728-422d-8a7a-eb797f9338ac)
+
 
 
 
