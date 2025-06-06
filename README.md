@@ -24,12 +24,11 @@ Select Team Screen:
 
 
 Home Screen:
-![image](https://github.com/user-attachments/assets/943a0c2a-4c21-4765-b857-988a5c680eab)
+![image](https://github.com/user-attachments/assets/4c446fc2-2be8-473a-a12a-94367fd98201)
 
-![image](https://github.com/user-attachments/assets/a6071b77-6ed5-485c-9523-2d5658a0324d)
+![image](https://github.com/user-attachments/assets/32025b60-9ea4-42e6-a83f-3f3848edabfd)
 
-![image](https://github.com/user-attachments/assets/f38c085b-87a0-4752-9c9b-ccd834c4902b)
-
+![image](https://github.com/user-attachments/assets/f3830dbf-38ab-4815-a877-41044e357a3b)
 
 Roster Screen:
 ![image](https://github.com/user-attachments/assets/6267d7ba-0609-46fd-a291-777665b5be17)
