@@ -1,69 +1,70 @@
 import random
 from datetime import date,timedelta
-from .sqldb import fetch_team_roster, fetch_all_team_names
+from .sqldb import fetch_team_roster, fetch_all_team_names, fetch_team_roster_full, save_player_stats, save_team_stats
 
 
 class GameEngine:
     PERIODS= 3
     PERIOD_LENGTH= 20
     OVERTIME_LENGTH= 5
-    GOAL_PER_MINS= 0.1
-    OT_GOALS_PER_MIN=0.1
+    GOAL_PER_MINS= 0.05
+    OT_GOALS_PER_MIN=0.05
 
     def get_all_teams(self):
         return fetch_all_team_names()
 
-
-    def calculate_ratings(self,team):
-        skaters= []
+    def calculate_ratings(self, team):
+        skaters = []
         for player in team:
             if player.get('Position') != 'G':
                 skaters.append(player)
 
-        goalies= []
+        goalies = []
         for player in team:
             if player.get('Position') == 'G':
                 goalies.append(player)
 
-        offense_values= []
-
+        # OFFENSE
+        offense_values = []
         for p in skaters:
-            shooting = p.get('Shooting')
-            vision= p.get('Vision')
-            speed= p.get('Speed')
+            shooting = p.get('Shooting') or 0
+            vision = p.get('Vision') or 0
+            speed = p.get('Speed') or 0
 
             individual_value = 0.6 * shooting + 0.4 * vision + 0.2 * speed
-
             offense_values.append(individual_value)
 
-        average_offense= sum(offense_values)/ len(offense_values)
+        average_offense = sum(offense_values) / max(len(offense_values), 1)
 
+        # DEFENSE
         defense_values = []
-
         for p in skaters:
-            defense_attribute_dman = p.get("Defense")
-            defense_attribute_oman= p.get("Forward Defense")
-            skating = p.get("Skating")
+            # If any of these is None, default to 0
+            defense_attribute_dman = p.get("Defense") or 0
+            defense_attribute_oman = p.get("Forward Defense") or 0
+            skating = p.get("Skating") or 0
 
-            total_defense= 0.7 * defense_attribute_dman + 0.3 * defense_attribute_oman + 0.4 * skating
-
+            total_defense = (
+                    0.7 * defense_attribute_dman
+                    + 0.3 * defense_attribute_oman
+                    + 0.4 * skating
+            )
             defense_values.append(total_defense)
 
-        average_defense = sum(defense_values)/len(defense_values)
+        average_defense = sum(defense_values) / max(len(defense_values), 1)
 
+        # GOALIES
         goalies_defense = []
-
         for goalie in goalies:
-            glove = goalie.get('Glove')
-            block= goalie.get('Blocker')
-            rebound = goalie.get('Rebound')
-            composure = goalie.get('Composure')
-            average_gk= (glove+block+rebound+composure) /4
+            glove = goalie.get('Glove') or 0
+            block = goalie.get('Blocker') or 0
+            rebound = goalie.get('Rebound') or 0
+            composure = goalie.get('Composure') or 0
+
+            average_gk = (glove + block + rebound + composure) / 4
             goalies_defense.append(average_gk)
 
-
-        avg_goalie_def= sum(goalies_defense)/len(goalies_defense)
-
+        avg_goalie_def = sum(goalies_defense) / max(len(goalies_defense), 1)
         return average_offense, average_defense, avg_goalie_def
 
     def attempt_goal(self,offense,defense,rate):
@@ -145,8 +146,8 @@ class GameEngine:
 
 
     def simulate_game(self, team1,team2):
-        first_team=fetch_team_roster(team1)
-        second_team= fetch_team_roster(team2)
+        first_team=fetch_team_roster_full(team1)
+        second_team= fetch_team_roster_full(team2)
 
         avg_off1, avg_def1, avg_gk1 = self.calculate_ratings(first_team)
         avg_off2, avg_def2, avg_gk2 = self.calculate_ratings(second_team)
@@ -347,25 +348,79 @@ class GameEngine:
             self.stats[t] = {"W": 0, "L": 0, "OTL": 0, "PTS": 0}
 
     def simulate_next_game(self):
-        game_date,home,away = self.schedule[self.current_game_id]
-        outcome = self.simulate_game(home,away)
+        game_date, home, away = self.schedule[self.current_game_id]
 
+        # 2) Run simulation
+        outcome = self.simulate_game(home, away)
         winner = outcome['winner']
-        loser= outcome['loser']
-        ot= outcome['overtime']
+        loser = outcome['loser']
+        ot = outcome['overtime']
 
-        self.stats[winner]['W']+= 1
+        # 3) Update in‐memory standings
+        self.stats[winner]['W'] += 1
         self.stats[winner]['PTS'] += 2
 
         if ot:
-            self.stats[loser]['OTL']+= 1
+            self.stats[loser]['OTL'] += 1
             self.stats[loser]['PTS'] += 1
         else:
-            self.stats[loser]['L'] +=1
+            self.stats[loser]['L'] += 1
 
-        self.current_game_id+=1
+        winner_W = self.stats[winner]['W']
+        winner_L=self.stats[winner]['L']
+        winner_PTS= self.stats[winner]['PTS']
+        winner_OTL= self.stats[winner]['OTL']
+        save_team_stats(winner,winner_W,winner_L,winner_OTL,winner_PTS)
 
-        return game_date,home,away,outcome
+        loser_W = self.stats[loser]['W']
+        loser_L = self.stats[loser]['L']
+        loser_PTS = self.stats[loser]['PTS']
+        loser_OTL = self.stats[loser]['OTL']
+        save_team_stats(loser, loser_W, loser_L, loser_OTL,loser_PTS)
+
+        # 4) Tally goals, assists, and points per individual player from this game’s events
+        player_goal_counts = {}
+        player_assist_counts = {}
+
+        for ev in outcome['events']:
+            scorer = ev['scorer']
+            assist1 = ev['assist1']
+            assist2 = ev['assist2']
+
+            # Increment the goal‐counter for the scorer
+            if scorer not in player_goal_counts:
+                player_goal_counts[scorer] = 0
+            player_goal_counts[scorer] += 1
+
+            # Increment the assist‐counters
+            if assist1:
+                if assist1 not in player_assist_counts:
+                    player_assist_counts[assist1] = 0
+                player_assist_counts[assist1] += 1
+            if assist2:
+                if assist2 not in player_assist_counts:
+                    player_assist_counts[assist2] = 0
+                player_assist_counts[assist2] += 1
+
+        all_scorers_and_assisters = set(player_goal_counts.keys()) | set(player_assist_counts.keys())
+
+        for player_name in all_scorers_and_assisters:
+            goals = player_goal_counts.get(player_name, 0)
+            assists = player_assist_counts.get(player_name, 0)
+            points = goals + assists
+
+            # Determine team by checking home roster first
+            first_team_names = [p['Name'] for p in fetch_team_roster_full(home)]
+            if player_name in first_team_names:
+                team_name = home
+            else:
+                team_name = away
+
+            save_player_stats(player_name, team_name, goals, assists, points)
+
+        self.current_game_id += 1
+
+        return game_date, home, away, outcome
 
     def get_remaining_games(self):
         return self.schedule[self.current_game_id:]

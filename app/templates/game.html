@@ -95,6 +95,100 @@
     </table>
   </div>
 
+  <!-- ─── NEW SECTION: Advance Day & Last 5 Games ─── -->
+  <div class="simulation-controls">
+    <!-- Display current date -->
+    {% if current_date %}
+      <h3>Today: {{ current_date.strftime('%B %d, %Y') }}</h3>
+    {% endif %}
+
+    <!-- Advance Day button -->
+    <form action="{{ url_for('advance_day') }}" method="post" class="advance-day-form">
+      <button type="submit">Advance Day</button>
+    </form>
+
+    <!-- Last 5 simulated games -->
+    <section class="recent-games">
+      <h3>Last 5 Simulated Games</h3>
+      {% if last5 and last5|length > 0 %}
+        <ul>
+          {% for game in last5 %}
+            <li>
+              <strong>{{ game.date.strftime('%b %d, %Y') }}:</strong>
+              {{ game.home }} {{ game.score1 }} – {{ game.away }} {{ game.score2 }}
+              {% if game.overtime %}
+                <em>(OT)</em>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No games simulated yet.</p>
+      {% endif %}
+    </section>
+  </div>
+  <!-- ──────────────────────────────────────────────────────────────────── -->
+
+  <!-- ─── NEW SECTION: Player Tallies & Team Rankings Tables ─── -->
+  <div class="stats-section">
+    <!-- Player Tallies Table -->
+    <h3>Player Stats</h3>
+    <table class="stats-table">
+      <thead>
+        <tr>
+          <th>Player Name</th>
+          <th>G</th>
+          <th>A</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for player_name, G, A, Points in tallies %}
+          <tr>
+            <td>{{ player_name }}</td>
+            <td>{{ G }}</td>
+            <td>{{ A }}</td>
+            <td>{{ Points }}</td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="4">No player stats to display.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- Team Rankings Table -->
+    <h3>Team Standings</h3>
+    <table class="stats-table">
+      <thead>
+        <tr>
+          <th>Team Name</th>
+          <th>W</th>
+          <th>L</th>
+          <th>OTL</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for team_name, W, L, OTL, Points in standings %}
+          <tr>
+            <td>{{ team_name }}</td>
+            <td>{{ W }}</td>
+            <td>{{ L }}</td>
+            <td>{{ OTL }}</td>
+            <td>{{ Points }}</td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="5">No standings to display.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <!-- ──────────────────────────────────────────────────────────────────── -->
+
   <script>
   (function() {
     const monthNames = [
@@ -151,7 +245,7 @@
 
     updateHeader();
   })();
-</script>
+  </script>
 
 </body>
 </html>
