@@ -4,17 +4,14 @@ Key Features:
 
 📊 Team Management: Draft, trade, and release players while managing the salary cap. (In Progress)
 
-🧠 Game Simulation: Simulate matches with logic based on player stats and team performance.  (In Progress)
-
-💾 Persistent Save System: Save and load franchises using a database.  (In Progress)
+🧠 Game Simulation: Simulate matches with logic based on player stats and team performance.
 
 🎨 Clean UI: Built responsive user interfaces with HTML/CSS and Python.  (In Progress)
 
-🔁 Stat Tracking: View season standings, player performance, and historical data.  (In Progress)
+🔁 Stat Tracking: View season standings, player performance, and historical data.
 
-🧩 Modular Design: Separated logic into backend (Python) and front-end views for maintainability.  (In Progress)
+🧩 Modular Design: Separated logic into backend (Python) and front-end views for maintainability. 
 
-** Currently Working on Trade Screen and Logic **
 
 Welcome Screen:
 ![image](https://github.com/user-attachments/assets/0a90481d-99b1-4ec6-a551-4a92bd2746aa)
