@@ -30,68 +30,7 @@ PostgreSQL
 
 HTML/CSS (Google Fonts, Montserrat)
 
-Installation
-
-Prerequisites
-
-Python 3.8 or higher
-
-PostgreSQL 12 or higher
-
-Setup
-
-Clone the repository:
-
-git clone https://github.com/keetsm1/HockeyGM.git
-cd HockeyGM
-
-Create a virtual environment and install dependencies:
-
-python -m venv venv
-source venv/bin/activate     # Linux/Mac
-venv\Scripts\activate      # Windows
-pip install -r requirements.txt
-
-Configure the database:
-
-Create a PostgreSQL database named hockeygm.
-
-Update app/game_logic/sqldb.py with your database credentials.
-
-Generate players:
-
-python -c "from app.game_logic.player_gen import player_generation; player_generation().create_players()"
-
-Run the Flask app:
-
-export FLASK_APP=app
-export FLASK_ENV=development
-flask run
-
-Project Structure
-
-HockeyGM/
-├── app/
-│   ├── __init__.py
-│   ├── routes.py
-│   ├── game_logic/
-│   │   ├── sqldb.py
-│   │   ├── player_gen.py
-│   │   ├── player_value.py
-│   │   └── game_engine.py
-│   ├── templates/
-│   │   ├── home.html
-│   │   ├── newGame.html
-│   │   ├── game.html
-│   │   └── ... (rosters, trades, calendar)
-│   └── static/
-│       ├── css/
-│       └── logos/
-├── requirements.txt
-└── README.md
-
-Usage
-
+**Usage: **
 **Home: Start a new game or load an existing one:**
 
 ![image](https://github.com/user-attachments/assets/577613ef-e02a-4461-a7ba-e4c372683da5)
