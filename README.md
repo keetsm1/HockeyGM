@@ -4,17 +4,14 @@ Key Features:
 
 📊 Team Management: Draft, trade, and release players while managing the salary cap. (In Progress)
 
-🧠 Game Simulation: Simulate matches with logic based on player stats and team performance.  (In Progress)
-
-💾 Persistent Save System: Save and load franchises using a database.  (In Progress)
+🧠 Game Simulation: Simulate matches with logic based on player stats and team performance.
 
 🎨 Clean UI: Built responsive user interfaces with HTML/CSS and Python.  (In Progress)
 
-🔁 Stat Tracking: View season standings, player performance, and historical data.  (In Progress)
+🔁 Stat Tracking: View season standings, player performance, and historical data.
 
-🧩 Modular Design: Separated logic into backend (Python) and front-end views for maintainability.  (In Progress)
+🧩 Modular Design: Separated logic into backend (Python) and front-end views for maintainability. 
 
-** Currently Working on Trade Screen and Logic **
 
 Welcome Screen:
 ![image](https://github.com/user-attachments/assets/0a90481d-99b1-4ec6-a551-4a92bd2746aa)
@@ -24,11 +21,15 @@ Select Team Screen:
 
 
 Home Screen:
-![image](https://github.com/user-attachments/assets/495d30ed-db23-49fd-9acb-c18983bcd66c)
+![image](https://github.com/user-attachments/assets/4c446fc2-2be8-473a-a12a-94367fd98201)
 
+![image](https://github.com/user-attachments/assets/32025b60-9ea4-42e6-a83f-3f3848edabfd)
+
+![image](https://github.com/user-attachments/assets/f3830dbf-38ab-4815-a877-41044e357a3b)
 
 Roster Screen:
-![image](https://github.com/user-attachments/assets/af1a0a01-80f3-40e4-83b5-4c84b0b7ef73)
+![image](https://github.com/user-attachments/assets/6267d7ba-0609-46fd-a291-777665b5be17)
+
 
 Trade Screen:
 ![image](https://github.com/user-attachments/assets/888f16cf-0728-422d-8a7a-eb797f9338ac)
