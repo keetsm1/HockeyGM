@@ -35,7 +35,7 @@ HTML/CSS (Google Fonts, Montserrat)
 
 ![image](https://github.com/user-attachments/assets/577613ef-e02a-4461-a7ba-e4c372683da5)
 
-****Team Selection: Choose your GM team: ****
+**Team Selection: Choose your GM team: **
 
 ![image](https://github.com/user-attachments/assets/e2e56a48-34d2-42a3-bbd2-9264bc31646c)
 
