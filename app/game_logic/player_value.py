@@ -57,8 +57,14 @@ class playerValue(player_gen.player_generation):
 
         return player_value
 
+    @staticmethod
     def isTradeFair(team1_data, team2_data, threshold=10):
 
+        cap = playerValue.SALARY_CAP
+        total_salary1 = sum(getattr(p, 'salary', 0) for p in team1_data)
+        total_salary2 = sum(getattr(p, 'salary', 0) for p in team2_data)
+        if total_salary1 > cap or total_salary2 > cap:
+            return False
 
         total1 = sum(p.calculate_value() for p in team1_data)
         total2 = sum(p.calculate_value() for p in team2_data)
@@ -66,7 +72,8 @@ class playerValue(player_gen.player_generation):
         if total1 >= total2:
             return True
 
-        if (total1 - total2) <= threshold:
+
+        if (total2 - total1) <= threshold:
             return True
 
         return False

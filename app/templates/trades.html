@@ -6,35 +6,43 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='trades.css') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
 </head>
 <body>
   <div class="sidebar">
     <a href="{{ url_for('sidebar_home') }}">Home</a>
-    <a href="#">Lines</a>
     <a href="{{ url_for('trades') }}">Trades</a>
     <a href="{{ url_for('rosters') }}">Rosters</a>
-    <a href="#">Free Agents</a>
-    <a href="#">Staff</a>
-    <a href="#">Draft</a>
   </div>
 
   <div class="content">
+
+    <!-- Show each team’s total salary -->
+    <div class="salary-summary">
+      <p>
+        {{ current_team }} total salary:
+        <strong>{{ salary_totals[current_team]|commafy }}</strong>
+      </p>
+      <p>
+        {{ selected_team }} total salary:
+        <strong>{{ salary_totals[selected_team]|commafy }}</strong>
+      </p>
+    </div>
 
     <!-- opponent selector -->
     <form method="get" action="{{ url_for('trades') }}" class="team-select-form">
       <label for="team">Choose opponent:</label>
       <select name="team" id="team" onchange="this.form.submit()">
         {% for t in teams %}
-          <option value="{{ t }}" {% if t==selected_team %}selected{% endif %}>{{ t }}</option>
+          <option value="{{ t }}" {% if t == selected_team %}selected{% endif %}>{{ t }}</option>
         {% endfor %}
       </select>
     </form>
 
     <!-- everything below posts to /propose_trade -->
     <form id="trade-form" method="post" action="{{ url_for('propose_trade') }}">
-
-      <!-- carry forward the selected team -->
       <input type="hidden" name="team" value="{{ selected_team }}">
 
       <div class="tables">
@@ -42,7 +50,11 @@
         <head>{{ current_team }}</head>
         <table>
           <thead>
-            <tr>{% for c in columns %}<th>{{ c }}</th>{% endfor %}</tr>
+            <tr>
+              {% for c in columns %}
+                <th>{{ c }}</th>
+              {% endfor %}
+            </tr>
           </thead>
           <tbody>
             {% for p in players %}
@@ -66,9 +78,13 @@
                 <td>{{ p[col_indices['height']] }}</td>
                 <td>{{ p[col_indices['position']] }}</td>
                 <td>{{ p[col_indices['overall_rating']] }}</td>
+                <td>{{ p[col_indices['salary']]|commafy }}</td>
                 <td>
                   <div class="value-bar-container">
-                    <div class="value-bar" style="width: {{ val }}px" data-value="{{ val }}"></div>
+                    <div class="value-bar"
+                         style="width: {{ val }}px"
+                         data-value="{{ val }}">
+                    </div>
                   </div>
                 </td>
               </tr>
@@ -80,7 +96,11 @@
         <head>{{ selected_team }}</head>
         <table>
           <thead>
-            <tr>{% for c in columns %}<th>{{ c }}</th>{% endfor %}</tr>
+            <tr>
+              {% for c in columns %}
+                <th>{{ c }}</th>
+              {% endfor %}
+            </tr>
           </thead>
           <tbody>
             {% for p in other_players %}
@@ -104,9 +124,13 @@
                 <td>{{ p[col_indices['height']] }}</td>
                 <td>{{ p[col_indices['position']] }}</td>
                 <td>{{ p[col_indices['overall_rating']] }}</td>
+                <td>{{ p[col_indices['salary']]|commafy }}</td>
                 <td>
                   <div class="value-bar-container">
-                    <div class="value-bar" style="width: {{ val }}px" data-value="{{ val }}"></div>
+                    <div class="value-bar"
+                         style="width: {{ val }}px"
+                         data-value="{{ val }}">
+                    </div>
                   </div>
                 </td>
               </tr>
@@ -132,56 +156,40 @@
     </form>
   </div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', updateOffers);
+  <script>
+    document.addEventListener('DOMContentLoaded', updateOffers);
 
-  function updateOffers() {
-    const list1 = document.getElementById('team1-list');
-    const list2 = document.getElementById('team2-list');
-    const btn   = document.getElementById('propose-trade');
-    const fill  = document.getElementById('fairness-fill');
-    const threshold = 5;  // same as your backend
+    function updateOffers() {
+      const list1 = document.getElementById('team1-list');
+      const list2 = document.getElementById('team2-list');
+      const btn   = document.getElementById('propose-trade');
+      const fill  = document.getElementById('fairness-fill');
+      const threshold = 5;
 
-    // Reset the lists and sums
-    list1.innerHTML = '';
-    list2.innerHTML = '';
-    let sum1 = 0, sum2 = 0;
+      list1.innerHTML = '';
+      list2.innerHTML = '';
+      let sum1 = 0, sum2 = 0;
 
-    // Team 1: gather checked boxes
-    document.querySelectorAll('.team1-checkbox:checked').forEach(cb => {
-      const name = cb.value;            // the player name
-      const val  = +cb.dataset.value;   // the numeric value
-      sum1 += val;
+      document.querySelectorAll('.team1-checkbox:checked').forEach(cb => {
+        sum1 += +cb.dataset.value;
+        const li = document.createElement('li');
+        li.textContent = cb.value;
+        list1.appendChild(li);
+      });
 
-      // append to UL
-      const li = document.createElement('li');
-      li.textContent = name;
-      list1.appendChild(li);
-    });
+      document.querySelectorAll('.team2-checkbox:checked').forEach(cb => {
+        sum2 += +cb.dataset.value;
+        const li = document.createElement('li');
+        li.textContent = cb.value;
+        list2.appendChild(li);
+      });
 
-    // Team 2: same process
-    document.querySelectorAll('.team2-checkbox:checked').forEach(cb => {
-      const name = cb.value;
-      const val  = +cb.dataset.value;
-      sum2 += val;
+      const max = Math.max(sum1, sum2) || 1;
+      fill.style.width = (sum1 / max * 100) + '%';
 
-      const li = document.createElement('li');
-      li.textContent = name;
-      list2.appendChild(li);
-    });
-
-    // Update fairness bar (Team 1’s share)
-    const max = Math.max(sum1, sum2) || 1;
-    fill.style.width = (sum1 / max * 100) + '%';
-
-    // Button logic: auto-accept if Team 1 > Team 2, else within threshold
-    if (sum1 > sum2 || (sum2 - sum1) <= threshold) {
-      btn.disabled = false;
-    } else {
-      btn.disabled = true;
+      btn.disabled = !(sum1 > sum2 || (sum2 - sum1) <= threshold);
     }
-  }
-</script>
+  </script>
 
 </body>
 </html>

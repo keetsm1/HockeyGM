@@ -23,6 +23,7 @@ def load_name_lists():
     return first_names, last_names
 
 class player_generation:
+    SALARY_CAP= 95_500_000
     def __init__(self):
         self.name= ""
         self.potential= ""
@@ -487,6 +488,40 @@ class player_generation:
 
         return round(overall)
 
+    def generate_salary(self, overall_rating):
+        if overall_rating >= 90:
+            low, high = 8_000_000, 12_000_000
+        elif overall_rating >= 88:
+            low, high = 7_000_000, 8_000_000
+        elif overall_rating >= 86:
+            low, high = 3_500_000, 6_500_000
+        elif overall_rating >= 83:
+            low, high = 2_500_000, 3_500_000
+        elif overall_rating >= 80:
+            low, high = 2_000_000, 2_500_000
+        elif overall_rating >= 70:
+            low, high = 725_000, 2_000_000
+        else:
+            low, high = 725_000, 1_000_000
+
+        return randint(low, high)
+
+    def salary_range(self, overall_rating):
+        if overall_rating >= 90:
+            return 8_000_000, 12_000_000
+        elif overall_rating >= 88:
+            return 7_000_000, 8_000_000
+        elif overall_rating >= 86:
+            return 3_500_000, 6_500_000
+        elif overall_rating >= 83:
+            return 2_500_000, 3_500_000
+        elif overall_rating >= 80:
+            return 2_000_000, 2_500_000
+        elif overall_rating >= 70:
+            return   725_000, 2_000_000
+        else:
+            return   725_000, 1_000_000
+
     def create_players(self):
         NHL_TEAMS = [
             "Anaheim Ducks", "Arizona Coyotes", "Boston Bruins", "Buffalo Sabres",
@@ -499,60 +534,82 @@ class player_generation:
             "Vancouver Canucks", "Vegas Golden Knights", "Washington Capitals", "Winnipeg Jets"
         ]
 
-        # Generate players
+        # 2) Generate all skaters & goalies
         all_forwards = self.generate_forwards()
         all_defensemen = self.generate_defenseman()
         all_goalies = self.generate_goalies()
 
-        # Sort each category
+        # 3) Sort by rating (as you had it)
         all_forwards.sort(key=lambda p: p.overall_rating_offense(), reverse=True)
         all_defensemen.sort(key=lambda p: p.overall_rating_defense(), reverse=True)
         all_goalies.sort(key=lambda p: p.overall_rating_goalies(), reverse=True)
 
+        # 4) Distribute evenly into per-team lists
         def distribute_evenly(players, per_team, teams):
             random.shuffle(players)
-            distributed = {team: [] for team in teams}
-            total_needed = per_team * len(teams)
+            return {
+                team: players[i * per_team:(i + 1) * per_team]
+                for i, team in enumerate(teams)
+            }
 
-            for i, team in enumerate(teams):
-                for j in range(per_team):
-                    index = i * per_team + j
-                    if index < len(players):
-                        distributed[team].append(players[index])
-                    else:
-                        break  # Not enough players left
-            return distributed
+        fwds_by_team = distribute_evenly(all_forwards, 15, NHL_TEAMS)
+        defs_by_team = distribute_evenly(all_defensemen, 8, NHL_TEAMS)
+        glys_by_team = distribute_evenly(all_goalies, 3, NHL_TEAMS)
 
-        forwards_by_team = distribute_evenly(all_forwards, 15, NHL_TEAMS)
-        defensemen_by_team = distribute_evenly(all_defensemen, 8, NHL_TEAMS)
-        goalies_by_team = distribute_evenly(all_goalies, 3, NHL_TEAMS)
-
+        # 5) Assign to each real team under the cap
+        leftovers = []  # players that overflow the cap
         for team in NHL_TEAMS:
-            players = forwards_by_team[team] + defensemen_by_team[team] + goalies_by_team[team]
-            for player in players:
-                player.team = team
+            roster = fwds_by_team[team] + defs_by_team[team] + glys_by_team[team]
+            team_spend = 0
+            for player in roster:
+                # determine overall_rating
                 if player.position == "G":
                     player.overall_rating = player.overall_rating_goalies()
                 elif player.position in ("LD", "RD", "LD/RD"):
                     player.overall_rating = player.overall_rating_defense()
                 else:
                     player.overall_rating = player.overall_rating_offense()
+
+                low, high = self.salary_range(player.overall_rating)
+                sal = self.generate_salary(player.overall_rating)
+
+                remaining = self.SALARY_CAP - team_spend
+
+                # if you can't even afford the minimum, drop to free agents
+                if remaining < low:
+                    leftovers.append(player)
+                    continue
+
+                # clamp to remaining cap if needed
+                if sal > remaining:
+                    sal = remaining
+
+                player.salary = sal
+                team_spend += sal
+                player.team = team
+
+                # save this player under the team
                 save_to_database(player)
 
-        # Free agents: leftovers
-        used_players = sum(forwards_by_team.values(), []) + \
-                       sum(defensemen_by_team.values(), []) + \
-                       sum(goalies_by_team.values(), [])
-        all_used_ids = set(id(p) for p in used_players)
-
-        free_agents = [p for p in all_forwards + all_defensemen + all_goalies if id(p) not in all_used_ids]
+        # 6) Anyone not on a roster becomes a free agent
+        used_ids = {
+            id(p) for team in NHL_TEAMS
+            for p in fwds_by_team[team] + defs_by_team[team] + glys_by_team[team]
+            if getattr(p, 'team', None) != "FREE AGENT"
+        }
+        all_players = all_forwards + all_defensemen + all_goalies
+        free_agents = [p for p in all_players if id(p) not in used_ids]
+        free_agents += leftovers
 
         for fa in free_agents:
-            fa.team = "FREE AGENT"
+            # ––– make sure they have overall_rating –––
             if fa.position == "G":
                 fa.overall_rating = fa.overall_rating_goalies()
             elif fa.position in ("LD", "RD", "LD/RD"):
                 fa.overall_rating = fa.overall_rating_defense()
             else:
                 fa.overall_rating = fa.overall_rating_offense()
+
+            fa.team = "FREE AGENT"
+            fa.salary = self.generate_salary(fa.overall_rating)
             save_to_database(fa)

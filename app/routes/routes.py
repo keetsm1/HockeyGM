@@ -24,6 +24,18 @@ def ensure_players_exist():
         generator = player_gen.player_generation()
         generator.create_players()
     cur.close()
+
+@app.template_filter('commafy')
+def commafy(value):
+    """
+    Turn 1222222 → "1,222,222".
+    Non-integers just get returned unchanged.
+    """
+    try:
+        return f"{int(value):,}"
+    except (ValueError, TypeError):
+        return value
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -167,7 +179,7 @@ def rosters():
 
     cur.execute("""
             SELECT name, potential,age,weight,height, position, shooting, determination,passing,vision,dman_defense,forward_defense,skating,
-                   speed, rebound_control, technique,glove,blocker,puck_handling, composure,overall_rating
+                   speed, rebound_control, technique,glove,blocker,puck_handling, composure,overall_rating, salary
             FROM players
             WHERE team= %s
             ORDER BY position,name;
@@ -178,8 +190,8 @@ def rosters():
         'name': 0, 'potential': 1, 'age': 2, 'weight': 3, 'height': 4, 'position': 5,
         'shooting': 6, 'determination': 7, 'passing': 8, 'vision': 9, 'dman_defense': 10,
         'forward_defense': 11, 'skating': 12, 'speed': 13, 'rebound_control': 14,
-        'technique': 15, 'glove': 16, 'blocker': 17, 'puck_handling': 18, 'composure': 19,
-        'overall_rating': 20
+        'technique': 15, 'glove': 16, 'blocker': 17, 'puck_handling': 18, 'composure': 19, 'overall_rating': 20,
+        'salary': 21
     }
 
     forwards= []
@@ -200,6 +212,7 @@ def rosters():
                 player[col_indices['blocker']],
                 player[col_indices['rebound_control']],
                 player[col_indices['composure']],
+                player[col_indices['salary']],
                 player[col_indices['overall_rating']]
             )
             goalies.append(goalie_data)
@@ -218,6 +231,7 @@ def rosters():
                 player[col_indices['dman_defense']],  # Using the defensive stat for defensemen
                 player[col_indices['skating']],
                 player[col_indices['speed']],
+                player[col_indices['salary']],
                 player[col_indices['overall_rating']]
             )
             defensemen.append(defenseman_data)
@@ -236,6 +250,7 @@ def rosters():
                 player[col_indices['forward_defense']],  # Using forward_defense for forwards
                 player[col_indices['skating']],
                 player[col_indices['speed']],
+                player[col_indices['salary']],
                 player[col_indices['overall_rating']]
             )
             forwards.append(forward_data)
@@ -243,15 +258,15 @@ def rosters():
     forwards_columns= [
         'Name', 'Potential', 'Age', 'Weight', 'Height', 'Position', 'Shooting',
         'Determination', 'Passing', 'Vision', 'Forward Defense', 'Skating',
-        'Speed', 'Overall'
+        'Speed', 'Salary', 'Overall'
     ]
     defensemen_columns = [
         'Name','Potential', 'Position', 'Age', 'Height', 'Weight', 'Shooting', 'Determination', 'Passing',
-        'Vision', 'Defense', 'Skating', 'Speed', 'Overall'
+        'Vision', 'Defense', 'Skating', 'Speed','Salary', 'Overall'
     ]
     goalies_columns = [
         'Name', 'Potential', 'Age', 'Weight', 'Height', 'Position', 'Glove',
-        'Blocker', 'Rebound Control', 'Composure', 'Overall'
+        'Blocker', 'Rebound Control', 'Composure', 'Salary','Overall'
     ]
 
     return render_template(
@@ -277,15 +292,25 @@ def trades():
     if not selected_team and teams:
         selected_team = teams[0]
 
-    # ─── use the same roster helper for BOTH sides ───
     players       = fetch_team_roster(current_team)
     other_players = fetch_team_roster(selected_team)
 
-    # ─── compute values just like before ───
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT
+          team,
+          COALESCE(SUM(salary), 0) AS total_salary
+        FROM players
+        GROUP BY team
+    """)
+    rows = cur.fetchall()              # ← note the ()
+    salary_totals = {team: total for team, total in rows}
+    cur.close()
+
     col_indices = {
         'name': 0, 'potential': 1, 'age': 2,
         'weight': 3, 'height': 4, 'position': 5,
-        'overall_rating': 6
+        'overall_rating': 6, 'salary': 7
     }
 
     player_values = []
@@ -313,7 +338,7 @@ def trades():
     columns = [
         'Name', 'Potential', 'Age',
         'Weight', 'Height', 'Position',
-        'Overall Rating', 'Player Value'
+        'Overall Rating', 'Salary', 'Player Value'
     ]
 
     return render_template(
@@ -326,7 +351,8 @@ def trades():
         columns=columns,
         col_indices=col_indices,
         player_values=player_values,
-        other_player_values=other_player_values
+        other_player_values=other_player_values,
+        salary_totals= salary_totals
     )
 
 @app.route('/propose_trade', methods=['POST'])

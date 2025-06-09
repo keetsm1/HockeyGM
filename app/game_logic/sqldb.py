@@ -18,15 +18,16 @@ def save_to_database(player):
         shooting, determination, passing, vision,
         dman_defense, forward_defense, skating, speed,
         rebound_control, technique, glove, blocker, 
-        puck_handling, composure, team, overall_rating
-    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        puck_handling, composure, team, overall_rating, salary
+    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
     values = (
         player.name, player.potential, player.age, player.weight,
         player.height, player.position, player.shooting, player.determination,
         player.passing, player.vision, player.dman_defense, player.forward_defense,
         player.skating, player.speed, player.rebound_control, player.technique,
-        player.glove, player.blocker, player.puck_handling, player.composure, player.team, player.overall_rating
+        player.glove, player.blocker, player.puck_handling, player.composure, player.team, player.overall_rating,
+        player.salary
     )
     cur.execute(query, values)
     conn.commit()
@@ -105,7 +106,7 @@ def fetch_team_roster(team):
     """
     cur = conn.cursor()
     cur.execute("""
-        SELECT name, potential, age, weight, height, position, overall_rating
+        SELECT name, potential, age, weight, height, position, overall_rating, salary
         FROM players
         WHERE team = %s
         ORDER BY position, name;
@@ -157,7 +158,7 @@ def fetch_team_roster_full(team: str):
         WHERE team = %s
         ORDER BY position, name;
     """, (team,))
-    rows = cur.fetchall()     # → each row is a dict with keys exactly matching the quoted aliases above
+    rows = cur.fetchall()
     cur.close()
     return rows
 
