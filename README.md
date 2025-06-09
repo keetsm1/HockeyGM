@@ -1,39 +1,116 @@
-Developing a browser-based Hockey General Manager simulation game where users take control of a hockey team, managing rosters, making trades, handling finances, and simulating seasons. Built with a Python backend (Flask) and an intuitive front-end using HTML, CSS, and Python for dynamic user interaction.
+HockeyGM
 
-Key Features:
+A web-based Hockey General Manager simulation game built with Python and Flask, featuring automatic player generation, full season scheduling, game simulation, and roster management using PostgreSQL.
 
-📊 Team Management: Draft, trade, and release players while managing the salary cap. (In Progress)
+Features
 
-🧠 Game Simulation: Simulate matches with logic based on player stats and team performance.
+Player Generation: Randomly generates forwards, defensemen, and goalies with realistic attributes and ratings. 
 
-🎨 Clean UI: Built responsive user interfaces with HTML/CSS and Python.  (In Progress)
+Database Management: Stores player data in PostgreSQL using psycopg2. 
 
-🔁 Stat Tracking: View season standings, player performance, and historical data.
+Roster Display: View team rosters sorted by position and rating. fileciteturn0file0
 
-🧩 Modular Design: Separated logic into backend (Python) and front-end views for maintainability. 
+Game Simulation: Simulate full games including regulation and overtime, record goals, assists, and update standings.
+
+Season Schedule: Generates a round-robin schedule plus extra matches to complete an 82-game season.
+
+Trade Logic: Evaluate fair trades based on player value calculations.
+
+Tech Stack
+
+Python 3.x
+
+Flask
+
+Jinja2 templates
+
+psycopg2
+
+PostgreSQL
+
+HTML/CSS (Google Fonts, Montserrat)
+
+Installation
+
+Prerequisites
+
+Python 3.8 or higher
+
+PostgreSQL 12 or higher
+
+Setup
+
+Clone the repository:
+
+git clone https://github.com/keetsm1/HockeyGM.git
+cd HockeyGM
+
+Create a virtual environment and install dependencies:
+
+python -m venv venv
+source venv/bin/activate     # Linux/Mac
+venv\Scripts\activate      # Windows
+pip install -r requirements.txt
+
+Configure the database:
+
+Create a PostgreSQL database named hockeygm.
+
+Update app/game_logic/sqldb.py with your database credentials.
+
+Generate players:
+
+python -c "from app.game_logic.player_gen import player_generation; player_generation().create_players()"
+
+Run the Flask app:
+
+export FLASK_APP=app
+export FLASK_ENV=development
+flask run
+
+Project Structure
+
+HockeyGM/
+├── app/
+│   ├── __init__.py
+│   ├── routes.py
+│   ├── game_logic/
+│   │   ├── sqldb.py
+│   │   ├── player_gen.py
+│   │   ├── player_value.py
+│   │   └── game_engine.py
+│   ├── templates/
+│   │   ├── home.html
+│   │   ├── newGame.html
+│   │   ├── game.html
+│   │   └── ... (rosters, trades, calendar)
+│   └── static/
+│       ├── css/
+│       └── logos/
+├── requirements.txt
+└── README.md
+
+Usage
+
+**Home: Start a new game or load an existing one:**
+
+![image](https://github.com/user-attachments/assets/577613ef-e02a-4461-a7ba-e4c372683da5)
+
+****Team Selection: Choose your GM team: ****
+
+![image](https://github.com/user-attachments/assets/e2e56a48-34d2-42a3-bbd2-9264bc31646c)
+
+**Game Dashboard: View schedules, simulate games day by day, advance calendar, Track wins, losses, overtime losses, and points:**
+
+![image](https://github.com/user-attachments/assets/b22c8318-0b96-47e3-8731-806cc99bb55f)
+![image](https://github.com/user-attachments/assets/9cf7f079-672a-4127-bf19-8ea5adb3460f)
+![image](https://github.com/user-attachments/assets/16471205-2368-417f-9ab6-89236693ae9d)
 
 
-Welcome Screen:
-![image](https://github.com/user-attachments/assets/0a90481d-99b1-4ec6-a551-4a92bd2746aa)
+**Rosters & Trades: Manage players, propose and accept trades: **
 
-Select Team Screen:
-![image](https://github.com/user-attachments/assets/da2d6e1c-cc07-4a1e-99e8-6636c113339e)
-
-
-Home Screen:
-![image](https://github.com/user-attachments/assets/4c446fc2-2be8-473a-a12a-94367fd98201)
-
-![image](https://github.com/user-attachments/assets/32025b60-9ea4-42e6-a83f-3f3848edabfd)
-
-![image](https://github.com/user-attachments/assets/f3830dbf-38ab-4815-a877-41044e357a3b)
-
-Roster Screen:
-![image](https://github.com/user-attachments/assets/6267d7ba-0609-46fd-a291-777665b5be17)
-
-
-Trade Screen:
-![image](https://github.com/user-attachments/assets/888f16cf-0728-422d-8a7a-eb797f9338ac)
-
+![image](https://github.com/user-attachments/assets/732af87e-a012-4ea2-8aa2-f150205beb8a)
+![image](https://github.com/user-attachments/assets/5ba6f962-2020-4c06-b53b-9945fc924b3f)
 
 
 
