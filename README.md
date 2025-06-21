@@ -8,7 +8,7 @@ Player Generation: Randomly generates forwards, defensemen, and goalies with rea
 
 Database Management: Stores player data in PostgreSQL using psycopg2. 
 
-Roster Display: View team rosters sorted by position and rating. fileciteturn0file0
+Roster Display: View team rosters sorted by position and rating. 
 
 Game Simulation: Simulate full games including regulation and overtime, record goals, assists, and update standings.
 
