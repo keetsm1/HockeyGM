@@ -18,7 +18,7 @@ Trade Logic: Evaluate fair trades based on player value calculations.
 
 Tech Stack
 
-Python 3.x
+Python
 
 Flask
 
@@ -28,7 +28,7 @@ psycopg2
 
 PostgreSQL
 
-HTML/CSS (Google Fonts, Montserrat)
+HTML/CSS
 
 **Usage:**
 **Home: Start a new game or load an existing one:**
